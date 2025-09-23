@@ -410,7 +410,7 @@ export default function Home() {
 
       {isOrgSelected ? (
         <>
-          <div className="flex flex-wrap gap-2 rounded-3xl border border-white/10 bg-white/5 p-1">
+          <div className="tabs rounded-t-2xl overflow-hidden">
             {tabs.map(tab => {
               const isActive = activeTab === tab.id
               return (
@@ -429,7 +429,7 @@ export default function Home() {
               )
             })}
           </div>
-
+<div className="tab-panel">
           {activeTab === 'donation' && (
             <div className="space-y-12">
               <section className="grid gap-6 xl:grid-cols-[1.15fr,0.85fr]">
@@ -1084,6 +1084,7 @@ export default function Home() {
               </div>
             </div>
           )}
+          </div>
         </>
       ) : (
         <Card title="Configuration requise">
