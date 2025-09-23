@@ -25,17 +25,27 @@ async function getAccountId(org_id, code) {
   return data.id
 }
 
-export async function GET() {
-  // 10 dernières écritures (avec code journal)
-  const { data, error } = await supabaseAdmin
+export async function GET(req) {
+  const orgId = req?.nextUrl?.searchParams?.get('org_id')
+
+  let query = supabaseAdmin
     .from('accounting_entries')
     .select('id, entry_date, ref, journal:accounting_journals(code)')
     .order('created_at', { ascending: false })
     .limit(10)
+
+  if (orgId) {
+    query = query.eq('org_id', orgId)
+  }
+
+  const { data, error } = await query
   if (error) return NextResponse.json({ error: error.message }, { status: 400 })
 
   const flat = (data || []).map(e => ({
-    id: e.id, entry_date: e.entry_date, ref: e.ref, journal_code: e.journal?.code
+    id: e.id,
+    entry_date: e.entry_date,
+    ref: e.ref,
+    journal_code: e.journal?.code,
   }))
   return NextResponse.json(flat)
 }
