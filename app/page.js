@@ -367,18 +367,7 @@ export default function Home() {
   return (
     <div className="space-y-12">
       <Card
-        title={(
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-200/80">Onboarding</p>
-              <h2 className="mt-2 text-2xl font-semibold text-white">Choisir une organisation</h2>
-              <p className="mt-2 max-w-xl text-sm text-slate-200/80">Activez l’espace en sélectionnant une entité.</p>
-            </div>
-            <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/[0.08] text-xl text-emerald-200">
-              🏢
-            </span>
-          </div>
-        )}
+        
       >
         {isLoadingOrgs ? (
           <p className="text-sm text-slate-300/80">Chargement des organisations…</p>
@@ -389,7 +378,7 @@ export default function Home() {
         ) : (
           <div className="space-y-4">
             <label className="space-y-2">
-              <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">Organisation</span>
+          
               <select className={inputClass} value={orgId} onChange={handleOrgChange}>
                 <option value="">Sélectionnez une organisation…</option>
                 {orgs.map(org => (
@@ -401,10 +390,10 @@ export default function Home() {
             </label>
             {selectedOrg ? (
               <div className="rounded-2xl border border-white/12 bg-white/[0.05] p-4 text-sm text-slate-200/85">
-                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-200/80">Organisation active</p>
+             
                 <p className="mt-2 text-sm font-semibold text-white">{selectedOrg.label}</p>
-                <p className="mt-1 break-all font-mono text-xs text-slate-300/70">{orgId}</p>
-                <p className="mt-3 text-xs text-slate-400/75">Toutes les actions utiliseront cette organisation.</p>
+       
+
               </div>
             ) : (
               <p className="text-sm text-slate-200/80">Sélectionnez une organisation pour déverrouiller les onglets.</p>
@@ -438,247 +427,52 @@ export default function Home() {
             {activeTab === 'donation' && (
               <div className="space-y-12">
               <section className="grid gap-6 xl:grid-cols-[1.15fr,0.85fr]">
-                <Card
-                  title={(
-                    <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                      <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-200/80">Paramètres</p>
-                        <h2 className="mt-2 text-2xl font-semibold text-white">Contexte général</h2>
-                        <p className="mt-2 max-w-xl text-sm text-slate-200/80">
-                          Ces valeurs alimentent l’ensemble du parcours pour {selectedOrg?.label || 'votre organisation'}.
-                        </p>
-                      </div>
-                      <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/[0.08] text-xl text-emerald-200">
-                        ⚙️
-                      </span>
-                    </div>
-                  )}
-                >
+        <Card
+  title={(
+    <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+      <div>
+        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-200/80">
+          Make a donation
+        </p>
+      </div>
+    </div>
+  )}
+  theme="light"
+>
                   <div className="grid gap-5 md:grid-cols-2">
-                    <div className="space-y-2">
-                      <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">
-                        Organisation sélectionnée
-                      </span>
-                      <div className="rounded-2xl border border-white/12 bg-white/[0.05] p-4 text-sm text-slate-200/85">
-                        <p className="font-semibold text-white">{selectedOrg?.label || '—'}</p>
-                        <p className="mt-1 break-all font-mono text-xs text-slate-300/70">{orgId}</p>
-                      </div>
-                    </div>
+             
                     <label className="space-y-2">
                       <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">Réseau</span>
                       <input className={inputClass} value={networkName} onChange={e => setNetworkName(e.target.value)} placeholder="base" />
                     </label>
-                    <label className="space-y-2">
-                      <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">Chain ID</span>
-                      <input className={inputClass} type="number" value={chainId} onChange={e => setChainId(e.target.value)} />
-                    </label>
+                   
                     <label className="space-y-2">
                       <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">Token</span>
                       <input className={inputClass} value={tokenSymbol} onChange={e => setTokenSymbol(e.target.value)} placeholder="USDC" />
                     </label>
+                  
                     <label className="space-y-2">
-                      <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">Décimales</span>
-                      <input className={inputClass} type="number" value={decimals} onChange={e => setDecimals(e.target.value)} />
-                    </label>
-                    <label className="space-y-2">
-                      <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">Montant cible</span>
+                      <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">Montant </span>
                       <input className={inputClass} value={amount} onChange={e => setAmount(e.target.value)} />
                     </label>
                   </div>
-                </Card>
-
-                <Card
-                  title={(
-                    <div>
-                      <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-200/80">Vue d’ensemble</p>
-                      <h2 className="mt-2 text-2xl font-semibold text-white">Instantané</h2>
-                      <p className="mt-2 text-sm text-slate-200/80">Résumé rapide du contexte actif.</p>
-                    </div>
-                  )}
-                >
-                  <div className="grid gap-5">
-                    <div className="grid gap-4 sm:grid-cols-3">
-                      <div className="rounded-2xl border border-white/12 bg-white/[0.05] p-4">
-                        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-emerald-200/80">Organisation</p>
-                        <p className="mt-3 text-sm font-semibold text-white">{selectedOrg?.label || '—'}</p>
-                        <p className="mt-2 break-all font-mono text-xs text-slate-300/70">{orgId}</p>
-                      </div>
-                      <div className="rounded-2xl border border-white/12 bg-white/[0.05] p-4">
-                        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-emerald-200/80">Montant simulé</p>
-                        <p className="mt-3 flex items-baseline gap-2 text-2xl font-semibold text-white">
-                          {amount || '—'}
-                          <span className="text-base font-medium text-emerald-200">{tokenSymbol}</span>
-                        </p>
-                        <p className="mt-2 text-xs text-slate-300/70">Token {tokenSymbol} • {decimals} déc.</p>
-                      </div>
-                      <div className="rounded-2xl border border-white/12 bg-white/[0.05] p-4">
-                        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-sky-200/80">Période à ancrer</p>
-                        <p className="mt-3 text-2xl font-semibold text-white">{period || '—'}</p>
-                        <p className="mt-2 text-xs text-slate-300/70">Réseau {networkName || '—'} • ID {chainId || '—'}</p>
-                      </div>
-                    </div>
-                    <div className="flex flex-wrap gap-2 text-xs font-semibold text-white/90">
-                      <span className="inline-flex items-center gap-2 rounded-full bg-emerald-400/15 px-3 py-1 text-emerald-200">
-                        1<span className="text-white/90">Simuler</span>
-                      </span>
-                      <span className="inline-flex items-center gap-2 rounded-full bg-sky-400/15 px-3 py-1 text-sky-200">
-                        2<span className="text-white/90">Écrire</span>
-                      </span>
-                      <span className="inline-flex items-center gap-2 rounded-full bg-emerald-400/15 px-3 py-1 text-emerald-200">
-                        3<span className="text-white/90">Ancrer</span>
-                      </span>
-                    </div>
-                  </div>
-                </Card>
-              </section>
-
-              <section className="grid gap-6 lg:grid-cols-2">
-                <Card
-                  title={(
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-200/80">Étape 1</p>
-                        <h2 className="mt-2 text-2xl font-semibold text-white">Simuler la transaction</h2>
-                      </div>
-                      <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/[0.08] text-xl text-emerald-200">
-                        💸
-                      </span>
-                    </div>
-                  )}
-                >
                   <form className="space-y-5" onSubmit={submitSimulateTx}>
-                    <div className="space-y-4">
-                      <label className="space-y-2">
-                        <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">Adresse du donateur</span>
-                        <input className={inputClass} value={fromAddr} onChange={e => setFromAddr(e.target.value)} placeholder="0x…" />
-                      </label>
-                      <label className="space-y-2">
-                        <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">Wallet de l’organisation</span>
-                        <input className={inputClass} value={toAddr} onChange={e => setToAddr(e.target.value)} placeholder="0x…" />
-                      </label>
-                    </div>
+                    
                     <div className="flex flex-wrap items-center gap-3">
                       <button className={primaryButtonClass} type="submit" disabled={!isOrgSelected}>
-                        Lancer la simulation
+                        Donner
                       </button>
-                      <p className="text-xs text-slate-300/70">Un ID est généré pour la réconciliation.</p>
+                  
                     </div>
                   </form>
                 </Card>
 
-                <Card
-                  title={(
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-sky-200/80">Étape 2</p>
-                        <h2 className="mt-2 text-2xl font-semibold text-white">Créer l’écriture</h2>
-                      </div>
-                      <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/[0.08] text-xl text-sky-200">
-                        🧾
-                      </span>
-                    </div>
-                  )}
-                >
-                  <form className="space-y-5" onSubmit={submitCreateEntry}>
-                    <div className="grid gap-4 sm:grid-cols-2">
-                      <label className="space-y-2">
-                        <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">Journal</span>
-                        <input className={inputClass} value={journalCode} onChange={e => setJournalCode(e.target.value)} placeholder="BQ" />
-                      </label>
-                      <label className="space-y-2">
-                        <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">Date</span>
-                        <input className={inputClass} type="date" value={entryDate} onChange={e => setEntryDate(e.target.value)} />
-                      </label>
-                    </div>
-                    <label className="space-y-2">
-                      <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">Référence</span>
-                      <input className={inputClass} value={ref} onChange={e => setRef(e.target.value)} placeholder="DON-001" />
-                    </label>
-                    <div className="grid gap-4 sm:grid-cols-2">
-                      <label className="space-y-2">
-                        <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">Compte débit</span>
-                        <input className={inputClass} value={debitAccount} onChange={e => setDebitAccount(e.target.value)} placeholder="5121" />
-                      </label>
-                      <label className="space-y-2">
-                        <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">Compte crédit</span>
-                        <input className={inputClass} value={creditAccount} onChange={e => setCreditAccount(e.target.value)} placeholder="706" />
-                      </label>
-                    </div>
-                    <label className="space-y-2">
-                      <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">Devise</span>
-                      <input className={inputClass} value={currency} onChange={e => setCurrency(e.target.value)} placeholder="EUR" />
-                    </label>
-                    <div className="flex flex-wrap items-center gap-3">
-                      <button className={primaryButtonClass} type="submit" disabled={!isOrgSelected}>
-                        Enregistrer l’écriture
-                      </button>
-                      <p className="text-xs text-slate-300/70">Les lignes sont équilibrées automatiquement.</p>
-                    </div>
-                  </form>
-                </Card>
+           
               </section>
 
-              <section className="grid gap-6 lg:grid-cols-[1.1fr,0.9fr]">
-                <Card
-                  title={(
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-200/80">Étape 3</p>
-                        <h2 className="mt-2 text-2xl font-semibold text-white">Réconcilier</h2>
-                      </div>
-                      <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/[0.08] text-xl text-emerald-200">
-                        🔗
-                      </span>
-                    </div>
-                  )}
-                >
-                  <form className="space-y-5" onSubmit={submitReconcile}>
-                    <div className="grid gap-4 sm:grid-cols-2">
-                      <label className="space-y-2">
-                        <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">Identifiant transaction</span>
-                        <input className={inputClass} placeholder="tx_id" value={reconcileTxId} onChange={e => setReconcileTxId(e.target.value)} />
-                      </label>
-                      <label className="space-y-2">
-                        <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">Identifiant écriture</span>
-                        <input className={inputClass} placeholder="entry_id" value={reconcileEntryId} onChange={e => setReconcileEntryId(e.target.value)} />
-                      </label>
-                    </div>
-                    <div className="flex flex-wrap items-center gap-3">
-                      <button className={primaryButtonClass} type="submit" disabled={!isOrgSelected}>
-                        Réconcilier
-                      </button>
-                      <p className="text-xs text-slate-300/70">Validez la correspondance avant l’ancrage.</p>
-                    </div>
-                  </form>
-                </Card>
+              
 
-                <Card
-                  title={(
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-sky-200/80">Étape finale</p>
-                        <h2 className="mt-2 text-2xl font-semibold text-white">Ancrer la période</h2>
-                      </div>
-                      <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/[0.08] text-xl text-sky-200">
-                        ⛓️
-                      </span>
-                    </div>
-                  )}
-                >
-                  <form className="space-y-5" onSubmit={submitAnchor}>
-                    <label className="space-y-2">
-                      <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">Période (AAAA-MM)</span>
-                      <input className={inputClass} type="month" value={period} onChange={e => setPeriod(e.target.value)} />
-                    </label>
-                    <div className="flex flex-wrap items-center gap-3">
-                      <button className={primaryButtonClass} type="submit" disabled={!isOrgSelected}>
-                        Déclencher l’ancrage
-                      </button>
-                      <p className="text-xs text-slate-300/70">Le hash est inscrit sur {networkName || 'le réseau choisi'}.</p>
-                    </div>
-                  </form>
-                </Card>
-              </section>
+        
             </div>
             )}
 

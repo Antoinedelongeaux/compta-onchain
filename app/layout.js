@@ -28,26 +28,9 @@ export default function RootLayout({ children }) {
                     les écritures, réconciliez les pièces et ancrez vos périodes en quelques clics.
                   </p>
                 </div>
-                <div className="self-stretch rounded-2xl border border-emerald-400/40 bg-emerald-400/10 px-6 py-5 text-right shadow-lg backdrop-blur">
-                  <p className="text-xs uppercase tracking-[0.3em] text-emerald-200/80">MVP en production</p>
-                  <p className="mt-3 text-4xl font-semibold text-white">{currentYear}</p>
-                  <p className="mt-2 text-sm text-slate-200/70">Ancrage sécurisé & traçabilité</p>
-                </div>
+              
               </div>
-              <div className="mt-6 flex flex-wrap items-center gap-3 text-xs text-slate-200/80">
-                <span className="inline-flex items-center gap-2 rounded-full bg-slate-900/80 px-3 py-1 ring-1 ring-white/10">
-                  <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
-                  Workflow complet
-                </span>
-                <span className="inline-flex items-center gap-2 rounded-full bg-slate-900/80 px-3 py-1 ring-1 ring-white/10">
-                  <span className="h-2 w-2 rounded-full bg-sky-400" />
-                  Réconciliation guidée
-                </span>
-                <span className="inline-flex items-center gap-2 rounded-full bg-slate-900/80 px-3 py-1 ring-1 ring-white/10">
-                  <span className="h-2 w-2 rounded-full bg-emerald-200" />
-                  Export audit-ready
-                </span>
-              </div>
+            
             </header>
 
             <main className="mt-10 flex-1 pb-10">{children}</main>
