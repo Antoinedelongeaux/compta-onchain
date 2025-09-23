@@ -9,23 +9,19 @@ module.exports = {
     extend: {
       colors: {
         brand: {
-          primary: "var(--brand-primary)",     // #38f6c6
-          secondary: "var(--brand-secondary)", // #60a5fa
-          surface: "var(--brand-surface)",     // rgba(16,22,45,0.8)
-          border: "var(--brand-border)",       // rgba(255,255,255,0.12)
+          primary: "var(--brand-primary)",
+          secondary: "var(--brand-secondary)",
+          surface: "var(--brand-surface)",
+          border: "var(--brand-border)",
         },
       },
       fontFamily: {
-        sans: ["Inter", "ui-sans-serif", "system-ui"], // à ajuster selon ton projet
+        sans: ["Inter", "ui-sans-serif", "system-ui"],
       },
       boxShadow: {
         innerGlow: "inset 0 2px 6px rgba(0,0,0,0.3)",
       },
     },
   },
-  plugins: [
-    require("@tailwindcss/forms"),
-    require("@tailwindcss/typography"),
-    require("@tailwindcss/aspect-ratio"),
-  ],
+  plugins: [],
 }

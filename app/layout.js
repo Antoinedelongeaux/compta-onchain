@@ -1,7 +1,4 @@
 import './globals.css'
-import { Plus_Jakarta_Sans } from 'next/font/google'
-
-const plusJakarta = Plus_Jakarta_Sans({ subsets: ['latin'], weight: ['400', '500', '600', '700'] })
 
 export const metadata = {
   title: 'Compta on-chain — Console de pilotage',
@@ -13,7 +10,7 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="fr">
-      <body className={`${plusJakarta.className} bg-slate-950 text-slate-100`}>
+      <body className="bg-slate-950 font-sans text-slate-100">
         <div className="relative isolate min-h-screen overflow-hidden">
           <div className="pointer-events-none absolute inset-x-0 -top-48 -z-10 flex justify-center">
             <div className="h-[540px] w-[780px] rounded-full bg-gradient-to-br from-emerald-400/60 via-sky-500/40 to-transparent blur-3xl" />

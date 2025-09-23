@@ -11,6 +11,19 @@ const tabs = [
   { id: 'balance', label: 'BalanceSheet' },
 ]
 
+const inputClass =
+  'w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-slate-100 shadow-inner shadow-black/10 placeholder:text-slate-400/80 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-300 focus:ring-offset-2 focus:ring-offset-slate-950'
+
+const primaryButtonClass =
+  'inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-400 to-sky-500 px-5 py-2.5 text-sm font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 transition-transform duration-200 hover:-translate-y-0.5 hover:from-emerald-300 hover:to-sky-400 focus:ring-2 focus:ring-emerald-200 focus:ring-offset-2 focus:ring-offset-slate-950 disabled:cursor-not-allowed disabled:opacity-60'
+
+const tabsContainerClass = 'flex w-full border-b border-white/20 bg-white/5 backdrop-blur-sm'
+
+const tabButtonBaseClass =
+  'flex-1 border-b-2 border-transparent px-4 py-3 text-sm font-semibold text-slate-300 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:ring-offset-2 focus:ring-offset-slate-950'
+
+const tabPanelClass = 'rounded-b-2xl border border-t-0 border-white/20 bg-slate-950/40 p-6 shadow-inner'
+
 export default function Home() {
   const [orgs, setOrgs] = useState([])
   const [orgsError, setOrgsError] = useState('')
@@ -380,7 +393,7 @@ export default function Home() {
           <div className="space-y-4">
             <label className="space-y-2">
               <span className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-300/80">Organisation</span>
-              <select className="input" value={orgId} onChange={handleOrgChange}>
+              <select className={inputClass} value={orgId} onChange={handleOrgChange}>
                 <option value="">Sélectionnez une organisation…</option>
                 {orgs.map(org => (
                   <option key={org.id} value={org.id}>
@@ -410,7 +423,7 @@ export default function Home() {
 
       {isOrgSelected ? (
         <>
-          <div className="tabs rounded-t-2xl overflow-hidden">
+          <div className={`${tabsContainerClass} rounded-t-2xl overflow-hidden`}>
             {tabs.map(tab => {
               const isActive = activeTab === tab.id
               return (
@@ -418,10 +431,10 @@ export default function Home() {
                   key={tab.id}
                   type="button"
                   onClick={() => setActiveTab(tab.id)}
-                  className={`rounded-2xl px-4 py-2 text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:ring-offset-2 focus:ring-offset-slate-950 ${
+                  className={`${tabButtonBaseClass} ${
                     isActive
-                      ? 'border border-emerald-300/60 bg-emerald-400/20 text-white shadow-inner shadow-emerald-300/20'
-                      : 'text-slate-300 hover:bg-white/10 hover:text-white'
+                      ? 'border-emerald-400 bg-emerald-400/10 text-white shadow-inner shadow-emerald-300/20'
+                      : 'hover:bg-white/10 hover:text-white'
                   }`}
                 >
                   {tab.label}
@@ -429,9 +442,9 @@ export default function Home() {
               )
             })}
           </div>
-<div className="tab-panel">
-          {activeTab === 'donation' && (
-            <div className="space-y-12">
+          <div className={tabPanelClass}>
+            {activeTab === 'donation' && (
+              <div className="space-y-12">
               <section className="grid gap-6 xl:grid-cols-[1.15fr,0.85fr]">
                 <Card
                   title={(
@@ -462,23 +475,23 @@ export default function Home() {
                     </div>
                     <label className="space-y-2">
                       <span className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-300/80">Réseau</span>
-                      <input className="input" value={networkName} onChange={e => setNetworkName(e.target.value)} placeholder="base" />
+                      <input className={inputClass} value={networkName} onChange={e => setNetworkName(e.target.value)} placeholder="base" />
                     </label>
                     <label className="space-y-2">
                       <span className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-300/80">Chain ID</span>
-                      <input className="input" type="number" value={chainId} onChange={e => setChainId(e.target.value)} />
+                      <input className={inputClass} type="number" value={chainId} onChange={e => setChainId(e.target.value)} />
                     </label>
                     <label className="space-y-2">
                       <span className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-300/80">Token (symbole)</span>
-                      <input className="input" value={tokenSymbol} onChange={e => setTokenSymbol(e.target.value)} placeholder="USDC" />
+                      <input className={inputClass} value={tokenSymbol} onChange={e => setTokenSymbol(e.target.value)} placeholder="USDC" />
                     </label>
                     <label className="space-y-2">
                       <span className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-300/80">Décimales</span>
-                      <input className="input" type="number" value={decimals} onChange={e => setDecimals(e.target.value)} />
+                      <input className={inputClass} type="number" value={decimals} onChange={e => setDecimals(e.target.value)} />
                     </label>
                     <label className="space-y-2">
                       <span className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-300/80">Montant cible</span>
-                      <input className="input" value={amount} onChange={e => setAmount(e.target.value)} />
+                      <input className={inputClass} value={amount} onChange={e => setAmount(e.target.value)} />
                     </label>
                   </div>
                 </Card>
@@ -566,15 +579,15 @@ export default function Home() {
                     <div className="space-y-4">
                       <label className="space-y-2">
                         <span className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-300/80">Adresse du donateur</span>
-                        <input className="input" value={fromAddr} onChange={e => setFromAddr(e.target.value)} placeholder="0x…" />
+                        <input className={inputClass} value={fromAddr} onChange={e => setFromAddr(e.target.value)} placeholder="0x…" />
                       </label>
                       <label className="space-y-2">
                         <span className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-300/80">Adresse du wallet de l’organisation</span>
-                        <input className="input" value={toAddr} onChange={e => setToAddr(e.target.value)} placeholder="0x…" />
+                        <input className={inputClass} value={toAddr} onChange={e => setToAddr(e.target.value)} placeholder="0x…" />
                       </label>
                     </div>
                     <div className="flex flex-wrap items-center gap-3">
-                      <button className="btn" type="submit" disabled={!isOrgSelected}>
+                      <button className={primaryButtonClass} type="submit" disabled={!isOrgSelected}>
                         Lancer la simulation
                       </button>
                       <p className="text-xs text-slate-300/70">Un identifiant transaction est généré pour la prochaine réconciliation.</p>
@@ -599,33 +612,33 @@ export default function Home() {
                     <div className="grid gap-4 sm:grid-cols-2">
                       <label className="space-y-2">
                         <span className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-300/80">Journal</span>
-                        <input className="input" value={journalCode} onChange={e => setJournalCode(e.target.value)} placeholder="BQ" />
+                        <input className={inputClass} value={journalCode} onChange={e => setJournalCode(e.target.value)} placeholder="BQ" />
                       </label>
                       <label className="space-y-2">
                         <span className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-300/80">Date</span>
-                        <input className="input" type="date" value={entryDate} onChange={e => setEntryDate(e.target.value)} />
+                        <input className={inputClass} type="date" value={entryDate} onChange={e => setEntryDate(e.target.value)} />
                       </label>
                     </div>
                     <label className="space-y-2">
                       <span className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-300/80">Référence</span>
-                      <input className="input" value={ref} onChange={e => setRef(e.target.value)} placeholder="DON-001" />
+                      <input className={inputClass} value={ref} onChange={e => setRef(e.target.value)} placeholder="DON-001" />
                     </label>
                     <div className="grid gap-4 sm:grid-cols-2">
                       <label className="space-y-2">
                         <span className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-300/80">Compte débit</span>
-                        <input className="input" value={debitAccount} onChange={e => setDebitAccount(e.target.value)} placeholder="5121" />
+                        <input className={inputClass} value={debitAccount} onChange={e => setDebitAccount(e.target.value)} placeholder="5121" />
                       </label>
                       <label className="space-y-2">
                         <span className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-300/80">Compte crédit</span>
-                        <input className="input" value={creditAccount} onChange={e => setCreditAccount(e.target.value)} placeholder="706" />
+                        <input className={inputClass} value={creditAccount} onChange={e => setCreditAccount(e.target.value)} placeholder="706" />
                       </label>
                     </div>
                     <label className="space-y-2">
                       <span className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-300/80">Devise</span>
-                      <input className="input" value={currency} onChange={e => setCurrency(e.target.value)} placeholder="EUR" />
+                      <input className={inputClass} value={currency} onChange={e => setCurrency(e.target.value)} placeholder="EUR" />
                     </label>
                     <div className="flex flex-wrap items-center gap-3">
-                      <button className="btn" type="submit" disabled={!isOrgSelected}>
+                      <button className={primaryButtonClass} type="submit" disabled={!isOrgSelected}>
                         Enregistrer l’écriture
                       </button>
                       <p className="text-xs text-slate-300/70">Les lignes sont automatiquement équilibrées selon vos montants.</p>
@@ -652,15 +665,15 @@ export default function Home() {
                     <div className="grid gap-4 sm:grid-cols-2">
                       <label className="space-y-2">
                         <span className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-300/80">Identifiant transaction</span>
-                        <input className="input" placeholder="tx_id" value={reconcileTxId} onChange={e => setReconcileTxId(e.target.value)} />
+                        <input className={inputClass} placeholder="tx_id" value={reconcileTxId} onChange={e => setReconcileTxId(e.target.value)} />
                       </label>
                       <label className="space-y-2">
                         <span className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-300/80">Identifiant écriture</span>
-                        <input className="input" placeholder="entry_id" value={reconcileEntryId} onChange={e => setReconcileEntryId(e.target.value)} />
+                        <input className={inputClass} placeholder="entry_id" value={reconcileEntryId} onChange={e => setReconcileEntryId(e.target.value)} />
                       </label>
                     </div>
                     <div className="flex flex-wrap items-center gap-3">
-                      <button className="btn" type="submit" disabled={!isOrgSelected}>
+                      <button className={primaryButtonClass} type="submit" disabled={!isOrgSelected}>
                         Réconcilier
                       </button>
                       <p className="text-xs text-slate-300/70">Validez la correspondance pour sécuriser la piste d’audit.</p>
@@ -684,10 +697,10 @@ export default function Home() {
                   <form className="space-y-5" onSubmit={submitAnchor}>
                     <label className="space-y-2">
                       <span className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-300/80">Période (AAAA-MM)</span>
-                      <input className="input" type="month" value={period} onChange={e => setPeriod(e.target.value)} />
+                      <input className={inputClass} type="month" value={period} onChange={e => setPeriod(e.target.value)} />
                     </label>
                     <div className="flex flex-wrap items-center gap-3">
-                      <button className="btn" type="submit" disabled={!isOrgSelected}>
+                      <button className={primaryButtonClass} type="submit" disabled={!isOrgSelected}>
                         Déclencher l’ancrage
                       </button>
                       <p className="text-xs text-slate-300/70">Un hash inviolable est inscrit sur {networkName || 'le réseau choisi'}.</p>
@@ -696,12 +709,12 @@ export default function Home() {
                 </Card>
               </section>
             </div>
-          )}
+            )}
 
-          {activeTab === 'cashflow' && (
-            <div className="space-y-6">
+            {activeTab === 'cashflow' && (
+              <div className="space-y-6">
               <div className="flex flex-wrap justify-end gap-2">
-                <button className="btn" type="button" onClick={handleRefreshInsights} disabled={insightsLoading}>
+                <button className={primaryButtonClass} type="button" onClick={handleRefreshInsights} disabled={insightsLoading}>
                   Recalculer
                 </button>
               </div>
@@ -786,12 +799,12 @@ export default function Home() {
                 </Card>
               </div>
             </div>
-          )}
+            )}
 
-          {activeTab === 'transactions' && (
-            <div className="space-y-6">
+            {activeTab === 'transactions' && (
+              <div className="space-y-6">
               <div className="flex flex-wrap justify-end gap-2">
-                <button className="btn" type="button" onClick={handleRefreshBook} disabled={recentLoading}>
+                <button className={primaryButtonClass} type="button" onClick={handleRefreshBook} disabled={recentLoading}>
                   Actualiser
                 </button>
               </div>
@@ -884,12 +897,12 @@ export default function Home() {
                 </Card>
               </div>
             </div>
-          )}
+            )}
 
-          {activeTab === 'pl' && (
-            <div className="space-y-6">
+            {activeTab === 'pl' && (
+              <div className="space-y-6">
               <div className="flex flex-wrap justify-end gap-2">
-                <button className="btn" type="button" onClick={handleRefreshInsights} disabled={insightsLoading}>
+                <button className={primaryButtonClass} type="button" onClick={handleRefreshInsights} disabled={insightsLoading}>
                   Recalculer
                 </button>
               </div>
@@ -980,12 +993,12 @@ export default function Home() {
                 </Card>
               </div>
             </div>
-          )}
+            )}
 
-          {activeTab === 'balance' && (
-            <div className="space-y-6">
+            {activeTab === 'balance' && (
+              <div className="space-y-6">
               <div className="flex flex-wrap justify-end gap-2">
-                <button className="btn" type="button" onClick={handleRefreshInsights} disabled={insightsLoading}>
+                <button className={primaryButtonClass} type="button" onClick={handleRefreshInsights} disabled={insightsLoading}>
                   Recalculer
                 </button>
               </div>
