@@ -35,13 +35,20 @@ async function ensureNetworkAndToken({ chain_id, network_name, token_symbol, dec
   return { network: net, token: tok }
 }
 
-export async function GET() {
-  // Liste simple (10 dernières)
-  const { data, error } = await supabaseAdmin
+export async function GET(req) {
+  const orgId = req?.nextUrl?.searchParams?.get('org_id')
+
+  let query = supabaseAdmin
     .from('blockchain_transactions')
-    .select('id, amount, from_addr, to_addr, block_time, status, token_id, token:blockchain_tokens(symbol)')
+    .select('id, amount, from_addr, to_addr, block_time, status, token:blockchain_tokens(symbol), network:blockchain_networks(name)')
     .order('block_time', { ascending: false })
     .limit(10)
+
+  if (orgId) {
+    query = query.eq('org_id', orgId)
+  }
+
+  const { data, error } = await query
   if (error) return NextResponse.json({ error: error.message }, { status: 400 })
 
   const flat = (data || []).map(d => ({
@@ -51,7 +58,8 @@ export async function GET() {
     to_addr: d.to_addr,
     block_time: d.block_time,
     status: d.status,
-    token_symbol: d.token?.symbol ?? 'N/A'
+    token_symbol: d.token?.symbol ?? 'N/A',
+    network_name: d.network?.name ?? null,
   }))
   return NextResponse.json(flat)
 }
