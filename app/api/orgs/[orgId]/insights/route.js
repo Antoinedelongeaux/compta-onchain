@@ -141,8 +141,10 @@ function computeBalanceSheet(lines, netResult = 0) {
   }
 }
 
-export async function GET(request, { params }) {
-  const orgId = params?.orgId
+// ✅ Correction : params doit être awaited
+export async function GET(request, context) {
+  const { orgId } = await context.params
+
   if (!orgId) {
     return NextResponse.json({ error: 'Identifiant organisation requis' }, { status: 400 })
   }
