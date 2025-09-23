@@ -12,17 +12,18 @@ const tabs = [
 ]
 
 const inputClass =
-  'w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-slate-100 shadow-inner shadow-black/10 placeholder:text-slate-400/80 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-300 focus:ring-offset-2 focus:ring-offset-slate-950'
+  'w-full rounded-2xl border border-white/15 bg-white/[0.04] px-4 py-2.5 text-sm text-slate-100 placeholder:text-slate-400/75 focus:border-emerald-300 focus:ring-2 focus:ring-emerald-200/70 focus:ring-offset-2 focus:ring-offset-slate-950'
 
 const primaryButtonClass =
-  'inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-400 to-sky-500 px-5 py-2.5 text-sm font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 transition-transform duration-200 hover:-translate-y-0.5 hover:from-emerald-300 hover:to-sky-400 focus:ring-2 focus:ring-emerald-200 focus:ring-offset-2 focus:ring-offset-slate-950 disabled:cursor-not-allowed disabled:opacity-60'
+  'inline-flex items-center justify-center gap-2 rounded-full bg-emerald-400 px-5 py-2.5 text-sm font-semibold text-slate-950 shadow-sm transition hover:bg-emerald-300 focus:ring-2 focus:ring-emerald-200 focus:ring-offset-2 focus:ring-offset-slate-950 disabled:cursor-not-allowed disabled:opacity-60'
 
-const tabsContainerClass = 'flex w-full border-b border-white/20 bg-white/5 backdrop-blur-sm'
+const tabsContainerClass =
+  'flex w-full flex-wrap gap-2 rounded-3xl border border-white/10 bg-white/[0.05] p-1 backdrop-blur-sm'
 
 const tabButtonBaseClass =
-  'flex-1 border-b-2 border-transparent px-4 py-3 text-sm font-semibold text-slate-300 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:ring-offset-2 focus:ring-offset-slate-950'
+  'flex-1 rounded-2xl px-4 py-2.5 text-sm font-medium text-slate-300 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-200 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950'
 
-const tabPanelClass = 'rounded-b-2xl border border-t-0 border-white/20 bg-slate-950/40 p-6 shadow-inner'
+const tabPanelClass = 'rounded-3xl border border-white/12 bg-white/[0.03] p-6 backdrop-blur-sm'
 
 export default function Home() {
   const [orgs, setOrgs] = useState([])
@@ -369,13 +370,11 @@ export default function Home() {
         title={(
           <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
             <div>
-              <p className="text-[0.7rem] uppercase tracking-[0.35em] text-emerald-300/70">Onboarding</p>
-              <h2 className="mt-2 text-2xl font-semibold text-white">Sélectionner une organisation</h2>
-              <p className="mt-3 max-w-xl text-sm text-slate-300/80">
-                Choisissez l’entité à analyser avant d’accéder aux actions opérationnelles et aux rapports consolidés.
-              </p>
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-200/80">Onboarding</p>
+              <h2 className="mt-2 text-2xl font-semibold text-white">Choisir une organisation</h2>
+              <p className="mt-2 max-w-xl text-sm text-slate-200/80">Activez l’espace en sélectionnant une entité.</p>
             </div>
-            <span className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-400/10 text-2xl text-emerald-200">
+            <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/[0.08] text-xl text-emerald-200">
               🏢
             </span>
           </div>
@@ -386,13 +385,11 @@ export default function Home() {
         ) : orgsError ? (
           <p className="text-sm text-rose-300">{orgsError}</p>
         ) : orgs.length === 0 ? (
-          <p className="text-sm text-slate-300/80">
-            Aucune organisation n’est disponible pour le moment. Ajoutez une entité dans votre base de données pour commencer.
-          </p>
+          <p className="text-sm text-slate-200/80">Aucune organisation trouvée. Ajoutez-en une pour commencer.</p>
         ) : (
           <div className="space-y-4">
             <label className="space-y-2">
-              <span className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-300/80">Organisation</span>
+              <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">Organisation</span>
               <select className={inputClass} value={orgId} onChange={handleOrgChange}>
                 <option value="">Sélectionnez une organisation…</option>
                 {orgs.map(org => (
@@ -403,19 +400,14 @@ export default function Home() {
               </select>
             </label>
             {selectedOrg ? (
-              <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-4 text-sm text-slate-300/80">
-                <p className="text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-emerald-200/80">Organisation active</p>
+              <div className="rounded-2xl border border-white/12 bg-white/[0.05] p-4 text-sm text-slate-200/85">
+                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-200/80">Organisation active</p>
                 <p className="mt-2 text-sm font-semibold text-white">{selectedOrg.label}</p>
                 <p className="mt-1 break-all font-mono text-xs text-slate-300/70">{orgId}</p>
-                <p className="mt-3 text-xs text-slate-400/70">
-                  Les cinq onglets ci-dessous appliqueront automatiquement ce contexte organisationnel.
-                </p>
+                <p className="mt-3 text-xs text-slate-400/75">Toutes les actions utiliseront cette organisation.</p>
               </div>
             ) : (
-              <p className="text-sm text-slate-300/80">
-                Une fois l’organisation sélectionnée, vous accéderez aux onglets « Make a donation », « CashFlow statement »,
-                « Transaction book », « P&L » et « BalanceSheet » avec les données correspondantes.
-              </p>
+              <p className="text-sm text-slate-200/80">Sélectionnez une organisation pour déverrouiller les onglets.</p>
             )}
           </div>
         )}
@@ -423,7 +415,7 @@ export default function Home() {
 
       {isOrgSelected ? (
         <>
-          <div className={`${tabsContainerClass} rounded-t-2xl overflow-hidden`}>
+          <div className={tabsContainerClass}>
             {tabs.map(tab => {
               const isActive = activeTab === tab.id
               return (
@@ -433,8 +425,8 @@ export default function Home() {
                   onClick={() => setActiveTab(tab.id)}
                   className={`${tabButtonBaseClass} ${
                     isActive
-                      ? 'border-emerald-400 bg-emerald-400/10 text-white shadow-inner shadow-emerald-300/20'
-                      : 'hover:bg-white/10 hover:text-white'
+                      ? 'bg-slate-950/60 text-white shadow-sm'
+                      : 'hover:bg-white/[0.08] hover:text-white'
                   }`}
                 >
                   {tab.label}
@@ -442,7 +434,7 @@ export default function Home() {
               )
             })}
           </div>
-          <div className={tabPanelClass}>
+          <div className={`${tabPanelClass} mt-4`}>
             {activeTab === 'donation' && (
               <div className="space-y-12">
               <section className="grid gap-6 xl:grid-cols-[1.15fr,0.85fr]">
@@ -450,14 +442,13 @@ export default function Home() {
                   title={(
                     <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                       <div>
-                        <p className="text-[0.7rem] uppercase tracking-[0.35em] text-emerald-300/70">Paramétrage initial</p>
-                        <h2 className="mt-2 text-2xl font-semibold text-white">Identité & réseau d’orchestration</h2>
-                        <p className="mt-3 max-w-xl text-sm text-slate-300/80">
-                          Ces réglages s’appliquent à l’ensemble du workflow (simulation, écriture, réconciliation et ancrage) pour
-                          l’organisation sélectionnée.
+                        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-200/80">Paramètres</p>
+                        <h2 className="mt-2 text-2xl font-semibold text-white">Contexte général</h2>
+                        <p className="mt-2 max-w-xl text-sm text-slate-200/80">
+                          Ces valeurs alimentent l’ensemble du parcours pour {selectedOrg?.label || 'votre organisation'}.
                         </p>
                       </div>
-                      <span className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-400/10 text-2xl text-emerald-200">
+                      <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/[0.08] text-xl text-emerald-200">
                         ⚙️
                       </span>
                     </div>
@@ -465,32 +456,32 @@ export default function Home() {
                 >
                   <div className="grid gap-5 md:grid-cols-2">
                     <div className="space-y-2">
-                      <span className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-300/80">
+                      <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">
                         Organisation sélectionnée
                       </span>
-                      <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-4 text-sm text-slate-300/80">
+                      <div className="rounded-2xl border border-white/12 bg-white/[0.05] p-4 text-sm text-slate-200/85">
                         <p className="font-semibold text-white">{selectedOrg?.label || '—'}</p>
                         <p className="mt-1 break-all font-mono text-xs text-slate-300/70">{orgId}</p>
                       </div>
                     </div>
                     <label className="space-y-2">
-                      <span className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-300/80">Réseau</span>
+                      <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">Réseau</span>
                       <input className={inputClass} value={networkName} onChange={e => setNetworkName(e.target.value)} placeholder="base" />
                     </label>
                     <label className="space-y-2">
-                      <span className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-300/80">Chain ID</span>
+                      <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">Chain ID</span>
                       <input className={inputClass} type="number" value={chainId} onChange={e => setChainId(e.target.value)} />
                     </label>
                     <label className="space-y-2">
-                      <span className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-300/80">Token (symbole)</span>
+                      <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">Token</span>
                       <input className={inputClass} value={tokenSymbol} onChange={e => setTokenSymbol(e.target.value)} placeholder="USDC" />
                     </label>
                     <label className="space-y-2">
-                      <span className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-300/80">Décimales</span>
+                      <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">Décimales</span>
                       <input className={inputClass} type="number" value={decimals} onChange={e => setDecimals(e.target.value)} />
                     </label>
                     <label className="space-y-2">
-                      <span className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-300/80">Montant cible</span>
+                      <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">Montant cible</span>
                       <input className={inputClass} value={amount} onChange={e => setAmount(e.target.value)} />
                     </label>
                   </div>
@@ -499,64 +490,44 @@ export default function Home() {
                 <Card
                   title={(
                     <div>
-                      <p className="text-[0.7rem] uppercase tracking-[0.35em] text-emerald-300/70">Vision synthétique</p>
-                      <h2 className="mt-2 text-2xl font-semibold text-white">Aperçu en temps réel</h2>
-                      <p className="mt-3 text-sm text-slate-300/80">
-                        Suivez les jalons du parcours comptable pour {selectedOrg?.label || 'votre organisation'}.
-                      </p>
+                      <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-200/80">Vue d’ensemble</p>
+                      <h2 className="mt-2 text-2xl font-semibold text-white">Instantané</h2>
+                      <p className="mt-2 text-sm text-slate-200/80">Résumé rapide du contexte actif.</p>
                     </div>
                   )}
                 >
                   <div className="grid gap-5">
                     <div className="grid gap-4 sm:grid-cols-3">
-                      <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-4 shadow-inner">
-                        <p className="text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-emerald-200/80">Organisation</p>
+                      <div className="rounded-2xl border border-white/12 bg-white/[0.05] p-4">
+                        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-emerald-200/80">Organisation</p>
                         <p className="mt-3 text-sm font-semibold text-white">{selectedOrg?.label || '—'}</p>
                         <p className="mt-2 break-all font-mono text-xs text-slate-300/70">{orgId}</p>
                       </div>
-                      <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-4 shadow-inner">
-                        <p className="text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-emerald-200/80">Montant simulé</p>
+                      <div className="rounded-2xl border border-white/12 bg-white/[0.05] p-4">
+                        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-emerald-200/80">Montant simulé</p>
                         <p className="mt-3 flex items-baseline gap-2 text-2xl font-semibold text-white">
                           {amount || '—'}
                           <span className="text-base font-medium text-emerald-200">{tokenSymbol}</span>
                         </p>
-                        <p className="mt-2 text-xs text-slate-300/70">Token {tokenSymbol} — {decimals} décimales</p>
+                        <p className="mt-2 text-xs text-slate-300/70">Token {tokenSymbol} • {decimals} déc.</p>
                       </div>
-                      <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-4 shadow-inner">
-                        <p className="text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-sky-200/80">Période à ancrer</p>
+                      <div className="rounded-2xl border border-white/12 bg-white/[0.05] p-4">
+                        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-sky-200/80">Période à ancrer</p>
                         <p className="mt-3 text-2xl font-semibold text-white">{period || '—'}</p>
-                        <p className="mt-2 text-xs text-slate-300/70">Réseau {networkName || '—'} • Chain ID {chainId || '—'}</p>
+                        <p className="mt-2 text-xs text-slate-300/70">Réseau {networkName || '—'} • ID {chainId || '—'}</p>
                       </div>
                     </div>
-                    <ol className="space-y-4 text-sm text-slate-300/80">
-                      <li className="flex items-start gap-3">
-                        <span className="mt-0.5 flex h-8 w-8 items-center justify-center rounded-full bg-emerald-400/20 text-sm font-semibold text-emerald-200">
-                          1
-                        </span>
-                        <div>
-                          <p className="font-medium text-white">Simuler la transaction</p>
-                          <p className="text-xs text-slate-300/70">Générez un ID on-chain pour sécuriser la trace de paiement.</p>
-                        </div>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <span className="mt-0.5 flex h-8 w-8 items-center justify-center rounded-full bg-sky-400/20 text-sm font-semibold text-sky-200">
-                          2
-                        </span>
-                        <div>
-                          <p className="font-medium text-white">Créer l’écriture comptable</p>
-                          <p className="text-xs text-slate-300/70">Alignez la pièce comptable avec votre plan de comptes.</p>
-                        </div>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <span className="mt-0.5 flex h-8 w-8 items-center justify-center rounded-full bg-emerald-400/20 text-sm font-semibold text-emerald-200">
-                          3
-                        </span>
-                        <div>
-                          <p className="font-medium text-white">Réconcilier & ancrer</p>
-                          <p className="text-xs text-slate-300/70">Associez les identifiants pour certifier la période et préparer l’audit.</p>
-                        </div>
-                      </li>
-                    </ol>
+                    <div className="flex flex-wrap gap-2 text-xs font-semibold text-white/90">
+                      <span className="inline-flex items-center gap-2 rounded-full bg-emerald-400/15 px-3 py-1 text-emerald-200">
+                        1<span className="text-white/90">Simuler</span>
+                      </span>
+                      <span className="inline-flex items-center gap-2 rounded-full bg-sky-400/15 px-3 py-1 text-sky-200">
+                        2<span className="text-white/90">Écrire</span>
+                      </span>
+                      <span className="inline-flex items-center gap-2 rounded-full bg-emerald-400/15 px-3 py-1 text-emerald-200">
+                        3<span className="text-white/90">Ancrer</span>
+                      </span>
+                    </div>
                   </div>
                 </Card>
               </section>
@@ -566,10 +537,10 @@ export default function Home() {
                   title={(
                     <div className="flex items-start justify-between gap-4">
                       <div>
-                        <p className="text-[0.7rem] uppercase tracking-[0.35em] text-emerald-300/70">Étape 1</p>
-                        <h2 className="mt-2 text-2xl font-semibold text-white">Simuler une transaction</h2>
+                        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-200/80">Étape 1</p>
+                        <h2 className="mt-2 text-2xl font-semibold text-white">Simuler la transaction</h2>
                       </div>
-                      <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-400/10 text-2xl text-emerald-200">
+                      <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/[0.08] text-xl text-emerald-200">
                         💸
                       </span>
                     </div>
@@ -578,11 +549,11 @@ export default function Home() {
                   <form className="space-y-5" onSubmit={submitSimulateTx}>
                     <div className="space-y-4">
                       <label className="space-y-2">
-                        <span className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-300/80">Adresse du donateur</span>
+                        <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">Adresse du donateur</span>
                         <input className={inputClass} value={fromAddr} onChange={e => setFromAddr(e.target.value)} placeholder="0x…" />
                       </label>
                       <label className="space-y-2">
-                        <span className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-300/80">Adresse du wallet de l’organisation</span>
+                        <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">Wallet de l’organisation</span>
                         <input className={inputClass} value={toAddr} onChange={e => setToAddr(e.target.value)} placeholder="0x…" />
                       </label>
                     </div>
@@ -590,7 +561,7 @@ export default function Home() {
                       <button className={primaryButtonClass} type="submit" disabled={!isOrgSelected}>
                         Lancer la simulation
                       </button>
-                      <p className="text-xs text-slate-300/70">Un identifiant transaction est généré pour la prochaine réconciliation.</p>
+                      <p className="text-xs text-slate-300/70">Un ID est généré pour la réconciliation.</p>
                     </div>
                   </form>
                 </Card>
@@ -599,10 +570,10 @@ export default function Home() {
                   title={(
                     <div className="flex items-start justify-between gap-4">
                       <div>
-                        <p className="text-[0.7rem] uppercase tracking-[0.35em] text-sky-200/80">Étape 2</p>
-                        <h2 className="mt-2 text-2xl font-semibold text-white">Créer une écriture comptable</h2>
+                        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-sky-200/80">Étape 2</p>
+                        <h2 className="mt-2 text-2xl font-semibold text-white">Créer l’écriture</h2>
                       </div>
-                      <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-sky-400/10 text-2xl text-sky-200">
+                      <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/[0.08] text-xl text-sky-200">
                         🧾
                       </span>
                     </div>
@@ -611,37 +582,37 @@ export default function Home() {
                   <form className="space-y-5" onSubmit={submitCreateEntry}>
                     <div className="grid gap-4 sm:grid-cols-2">
                       <label className="space-y-2">
-                        <span className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-300/80">Journal</span>
+                        <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">Journal</span>
                         <input className={inputClass} value={journalCode} onChange={e => setJournalCode(e.target.value)} placeholder="BQ" />
                       </label>
                       <label className="space-y-2">
-                        <span className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-300/80">Date</span>
+                        <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">Date</span>
                         <input className={inputClass} type="date" value={entryDate} onChange={e => setEntryDate(e.target.value)} />
                       </label>
                     </div>
                     <label className="space-y-2">
-                      <span className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-300/80">Référence</span>
+                      <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">Référence</span>
                       <input className={inputClass} value={ref} onChange={e => setRef(e.target.value)} placeholder="DON-001" />
                     </label>
                     <div className="grid gap-4 sm:grid-cols-2">
                       <label className="space-y-2">
-                        <span className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-300/80">Compte débit</span>
+                        <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">Compte débit</span>
                         <input className={inputClass} value={debitAccount} onChange={e => setDebitAccount(e.target.value)} placeholder="5121" />
                       </label>
                       <label className="space-y-2">
-                        <span className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-300/80">Compte crédit</span>
+                        <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">Compte crédit</span>
                         <input className={inputClass} value={creditAccount} onChange={e => setCreditAccount(e.target.value)} placeholder="706" />
                       </label>
                     </div>
                     <label className="space-y-2">
-                      <span className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-300/80">Devise</span>
+                      <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">Devise</span>
                       <input className={inputClass} value={currency} onChange={e => setCurrency(e.target.value)} placeholder="EUR" />
                     </label>
                     <div className="flex flex-wrap items-center gap-3">
                       <button className={primaryButtonClass} type="submit" disabled={!isOrgSelected}>
                         Enregistrer l’écriture
                       </button>
-                      <p className="text-xs text-slate-300/70">Les lignes sont automatiquement équilibrées selon vos montants.</p>
+                      <p className="text-xs text-slate-300/70">Les lignes sont équilibrées automatiquement.</p>
                     </div>
                   </form>
                 </Card>
@@ -652,10 +623,10 @@ export default function Home() {
                   title={(
                     <div className="flex items-start justify-between gap-4">
                       <div>
-                        <p className="text-[0.7rem] uppercase tracking-[0.35em] text-emerald-300/70">Étape 3</p>
-                        <h2 className="mt-2 text-2xl font-semibold text-white">Réconcilier transaction & écriture</h2>
+                        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-200/80">Étape 3</p>
+                        <h2 className="mt-2 text-2xl font-semibold text-white">Réconcilier</h2>
                       </div>
-                      <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-400/10 text-2xl text-emerald-200">
+                      <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/[0.08] text-xl text-emerald-200">
                         🔗
                       </span>
                     </div>
@@ -664,11 +635,11 @@ export default function Home() {
                   <form className="space-y-5" onSubmit={submitReconcile}>
                     <div className="grid gap-4 sm:grid-cols-2">
                       <label className="space-y-2">
-                        <span className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-300/80">Identifiant transaction</span>
+                        <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">Identifiant transaction</span>
                         <input className={inputClass} placeholder="tx_id" value={reconcileTxId} onChange={e => setReconcileTxId(e.target.value)} />
                       </label>
                       <label className="space-y-2">
-                        <span className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-300/80">Identifiant écriture</span>
+                        <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">Identifiant écriture</span>
                         <input className={inputClass} placeholder="entry_id" value={reconcileEntryId} onChange={e => setReconcileEntryId(e.target.value)} />
                       </label>
                     </div>
@@ -676,7 +647,7 @@ export default function Home() {
                       <button className={primaryButtonClass} type="submit" disabled={!isOrgSelected}>
                         Réconcilier
                       </button>
-                      <p className="text-xs text-slate-300/70">Validez la correspondance pour sécuriser la piste d’audit.</p>
+                      <p className="text-xs text-slate-300/70">Validez la correspondance avant l’ancrage.</p>
                     </div>
                   </form>
                 </Card>
@@ -685,10 +656,10 @@ export default function Home() {
                   title={(
                     <div className="flex items-start justify-between gap-4">
                       <div>
-                        <p className="text-[0.7rem] uppercase tracking-[0.35em] text-sky-200/80">Étape finale</p>
-                        <h2 className="mt-2 text-2xl font-semibold text-white">Ancrer une période</h2>
+                        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-sky-200/80">Étape finale</p>
+                        <h2 className="mt-2 text-2xl font-semibold text-white">Ancrer la période</h2>
                       </div>
-                      <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-sky-400/10 text-2xl text-sky-200">
+                      <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/[0.08] text-xl text-sky-200">
                         ⛓️
                       </span>
                     </div>
@@ -696,14 +667,14 @@ export default function Home() {
                 >
                   <form className="space-y-5" onSubmit={submitAnchor}>
                     <label className="space-y-2">
-                      <span className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-300/80">Période (AAAA-MM)</span>
+                      <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">Période (AAAA-MM)</span>
                       <input className={inputClass} type="month" value={period} onChange={e => setPeriod(e.target.value)} />
                     </label>
                     <div className="flex flex-wrap items-center gap-3">
                       <button className={primaryButtonClass} type="submit" disabled={!isOrgSelected}>
                         Déclencher l’ancrage
                       </button>
-                      <p className="text-xs text-slate-300/70">Un hash inviolable est inscrit sur {networkName || 'le réseau choisi'}.</p>
+                      <p className="text-xs text-slate-300/70">Le hash est inscrit sur {networkName || 'le réseau choisi'}.</p>
                     </div>
                   </form>
                 </Card>
@@ -722,30 +693,30 @@ export default function Home() {
                 <Card
                   title={(
                     <div>
-                      <p className="text-[0.7rem] uppercase tracking-[0.35em] text-emerald-300/70">Analyse trésorerie</p>
-                      <h2 className="mt-2 text-2xl font-semibold text-white">CashFlow statement</h2>
-                      <p className="mt-3 text-sm text-slate-300/80">
-                        Variation nette des comptes de trésorerie pour {selectedOrg?.label || 'l’organisation sélectionnée'}.
+                      <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-200/80">Trésorerie</p>
+                      <h2 className="mt-2 text-2xl font-semibold text-white">Flux de trésorerie</h2>
+                      <p className="mt-2 text-sm text-slate-200/80">
+                        Synthèse des entrées et sorties pour {selectedOrg?.label || 'l’organisation sélectionnée'}.
                       </p>
                     </div>
                   )}
                 >
                   {renderInsightsContent(() => {
                     if (!cashflow || (cashflow.accounts?.length ?? 0) === 0) {
-                      return <p className="text-sm text-slate-300/80">Pas de mouvement de trésorerie enregistré.</p>
+                      return <p className="text-sm text-slate-200/80">Aucun mouvement enregistré.</p>
                     }
                     return (
                       <div className="space-y-6">
                         <div className="grid gap-4 sm:grid-cols-3">
-                          <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-4 shadow-inner">
+                          <div className="rounded-2xl border border-white/12 bg-white/[0.05] p-4">
                             <p className="text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-emerald-200/80">Entrées</p>
                             <p className="mt-3 text-xl font-semibold text-white">{formatCurrency(cashflow.inflows)}</p>
                           </div>
-                          <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-4 shadow-inner">
+                          <div className="rounded-2xl border border-white/12 bg-white/[0.05] p-4">
                             <p className="text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-sky-200/80">Sorties</p>
                             <p className="mt-3 text-xl font-semibold text-white">{formatCurrency(cashflow.outflows)}</p>
                           </div>
-                          <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-4 shadow-inner">
+                          <div className="rounded-2xl border border-white/12 bg-white/[0.05] p-4">
                             <p className="text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-emerald-200/80">Variation nette</p>
                             <p
                               className={`mt-3 text-xl font-semibold ${
@@ -757,8 +728,8 @@ export default function Home() {
                           </div>
                         </div>
                         <p className="text-xs text-slate-300/70">
-                          Calcul basé sur les comptes de classe 5 ({cashflow.accounts.length} compte
-                          {cashflow.accounts.length > 1 ? 's' : ''}).
+                          Basé sur {cashflow.accounts.length} compte
+                          {cashflow.accounts.length > 1 ? 's' : ''} de classe 5.
                         </p>
                       </div>
                     )
@@ -771,7 +742,7 @@ export default function Home() {
                       {cashflow.accounts.map(acc => (
                         <li
                           key={acc.code}
-                          className="rounded-2xl border border-white/10 bg-slate-950/40 p-4 shadow-inner transition hover:border-emerald-400/40 hover:bg-emerald-400/5"
+                          className="rounded-2xl border border-white/12 bg-white/[0.05] p-4 transition hover:border-emerald-300/40 hover:bg-emerald-400/10"
                         >
                           <div className="flex flex-wrap items-start justify-between gap-3">
                             <div>
@@ -814,25 +785,25 @@ export default function Home() {
                   title={(
                     <div className="flex items-start justify-between gap-4">
                       <div>
-                        <p className="text-[0.7rem] uppercase tracking-[0.35em] text-emerald-300/70">Traçabilité</p>
+                        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-200/80">Traçabilité</p>
                         <h2 className="mt-2 text-2xl font-semibold text-white">Transactions on-chain</h2>
                       </div>
-                      <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-400/10 text-2xl text-emerald-200">
+                      <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/[0.08] text-xl text-emerald-200">
                         🪙
                       </span>
                     </div>
                   )}
                 >
                   {recentLoading ? (
-                    <p className="text-sm text-slate-300/80">Chargement…</p>
+                    <p className="text-sm text-slate-200/80">Chargement…</p>
                   ) : recentTxs.length === 0 ? (
-                    <p className="text-sm text-slate-300/80">Aucune transaction simulée pour le moment.</p>
+                    <p className="text-sm text-slate-200/80">Aucune transaction simulée.</p>
                   ) : (
                     <ul className="space-y-3">
                       {recentTxs.map(t => (
                         <li
                           key={t.id}
-                          className="rounded-2xl border border-white/10 bg-slate-950/40 p-4 shadow-inner transition hover:border-emerald-400/40 hover:bg-emerald-400/5"
+                          className="rounded-2xl border border-white/12 bg-white/[0.05] p-4 transition hover:border-emerald-300/40 hover:bg-emerald-400/10"
                         >
                           <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
                             <span className="font-mono text-emerald-200/80">{t.id}</span>
@@ -862,25 +833,25 @@ export default function Home() {
                   title={(
                     <div className="flex items-start justify-between gap-4">
                       <div>
-                        <p className="text-[0.7rem] uppercase tracking-[0.35em] text-sky-200/80">Journalisation</p>
+                        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-sky-200/80">Journalisation</p>
                         <h2 className="mt-2 text-2xl font-semibold text-white">Écritures comptables</h2>
                       </div>
-                      <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-sky-400/10 text-2xl text-sky-200">
+                      <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/[0.08] text-xl text-sky-200">
                         📒
                       </span>
                     </div>
                   )}
                 >
                   {recentLoading ? (
-                    <p className="text-sm text-slate-300/80">Chargement…</p>
+                    <p className="text-sm text-slate-200/80">Chargement…</p>
                   ) : recentEntries.length === 0 ? (
-                    <p className="text-sm text-slate-300/80">Aucune écriture encore synchronisée.</p>
+                    <p className="text-sm text-slate-200/80">Aucune écriture synchronisée.</p>
                   ) : (
                     <ul className="space-y-3">
                       {recentEntries.map(e => (
                         <li
                           key={e.id}
-                          className="rounded-2xl border border-white/10 bg-slate-950/40 p-4 shadow-inner transition hover:border-sky-400/40 hover:bg-sky-400/5"
+                          className="rounded-2xl border border-white/12 bg-white/[0.05] p-4 transition hover:border-sky-300/40 hover:bg-sky-400/10"
                         >
                           <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
                             <span className="font-mono text-sky-200/80">{e.id}</span>
@@ -910,29 +881,29 @@ export default function Home() {
                 <Card
                   title={(
                     <div>
-                      <p className="text-[0.7rem] uppercase tracking-[0.35em] text-emerald-300/70">Résultat</p>
+                      <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-200/80">Résultat</p>
                       <h2 className="mt-2 text-2xl font-semibold text-white">P&L</h2>
-                      <p className="mt-3 text-sm text-slate-300/80">
-                        Vision synthétique des produits et charges pour {selectedOrg?.label || 'l’organisation analysée'}.
+                      <p className="mt-2 text-sm text-slate-200/80">
+                        Aperçu des produits et charges pour {selectedOrg?.label || 'l’organisation analysée'}.
                       </p>
                     </div>
                   )}
                 >
                   {renderInsightsContent(() => {
                     if (!plData) {
-                      return <p className="text-sm text-slate-300/80">Aucune donnée de résultat disponible.</p>
+                      return <p className="text-sm text-slate-200/80">Aucune donnée de résultat.</p>
                     }
                     return (
                       <div className="grid gap-4 sm:grid-cols-3">
-                        <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-4 shadow-inner">
+                        <div className="rounded-2xl border border-white/12 bg-white/[0.05] p-4">
                           <p className="text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-emerald-200/80">Produits</p>
                           <p className="mt-3 text-xl font-semibold text-white">{formatCurrency(plData.revenueTotal)}</p>
                         </div>
-                        <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-4 shadow-inner">
+                        <div className="rounded-2xl border border-white/12 bg-white/[0.05] p-4">
                           <p className="text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-sky-200/80">Charges</p>
                           <p className="mt-3 text-xl font-semibold text-white">{formatCurrency(plData.expenseTotal)}</p>
                         </div>
-                        <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-4 shadow-inner">
+                        <div className="rounded-2xl border border-white/12 bg-white/[0.05] p-4">
                           <p className="text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-emerald-200/80">Résultat net</p>
                           <p className={`mt-3 text-xl font-semibold ${plData.net >= 0 ? 'text-emerald-200' : 'text-rose-200'}`}>
                             {formatCurrency(plData.net)}
@@ -955,7 +926,7 @@ export default function Home() {
                             plData.revenues.map(rev => (
                               <li
                                 key={rev.code}
-                                className="rounded-2xl border border-white/10 bg-slate-950/40 p-3 shadow-inner"
+                                className="rounded-2xl border border-white/12 bg-white/[0.05] p-3"
                               >
                                 <div className="flex items-center justify-between gap-3 text-sm">
                                   <span className="font-semibold text-white">{rev.code}</span>
@@ -976,7 +947,7 @@ export default function Home() {
                             plData.expenses.map(exp => (
                               <li
                                 key={exp.code}
-                                className="rounded-2xl border border-white/10 bg-slate-950/40 p-3 shadow-inner"
+                                className="rounded-2xl border border-white/12 bg-white/[0.05] p-3"
                               >
                                 <div className="flex items-center justify-between gap-3 text-sm">
                                   <span className="font-semibold text-white">{exp.code}</span>
@@ -1006,9 +977,9 @@ export default function Home() {
                 <Card
                   title={(
                     <div>
-                      <p className="text-[0.7rem] uppercase tracking-[0.35em] text-emerald-300/70">Structure financière</p>
-                      <h2 className="mt-2 text-2xl font-semibold text-white">BalanceSheet</h2>
-                      <p className="mt-3 text-sm text-slate-300/80">
+                      <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-200/80">Structure financière</p>
+                      <h2 className="mt-2 text-2xl font-semibold text-white">Bilan</h2>
+                      <p className="mt-2 text-sm text-slate-200/80">
                         Répartition des actifs et passifs pour {selectedOrg?.label || 'l’organisation suivie'}.
                       </p>
                     </div>
@@ -1016,20 +987,20 @@ export default function Home() {
                 >
                   {renderInsightsContent(() => {
                     if (!balanceSheet) {
-                      return <p className="text-sm text-slate-300/80">Aucune donnée de bilan disponible.</p>
+                      return <p className="text-sm text-slate-200/80">Aucune donnée de bilan.</p>
                     }
                     return (
                       <div className="space-y-4">
                         <div className="grid gap-4 sm:grid-cols-3">
-                          <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-4 shadow-inner">
+                          <div className="rounded-2xl border border-white/12 bg-white/[0.05] p-4">
                             <p className="text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-emerald-200/80">Actif total</p>
                             <p className="mt-3 text-xl font-semibold text-white">{formatCurrency(balanceSheet.totalAssets)}</p>
                           </div>
-                          <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-4 shadow-inner">
+                          <div className="rounded-2xl border border-white/12 bg-white/[0.05] p-4">
                             <p className="text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-sky-200/80">Passif total</p>
                             <p className="mt-3 text-xl font-semibold text-white">{formatCurrency(balanceSheet.totalLiabilities)}</p>
                           </div>
-                          <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-4 shadow-inner">
+                          <div className="rounded-2xl border border-white/12 bg-white/[0.05] p-4">
                             <p className="text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-emerald-200/80">Écart</p>
                             <p
                               className={`mt-3 text-xl font-semibold ${
@@ -1060,7 +1031,7 @@ export default function Home() {
                             balanceSheet.assets.map(item => (
                               <li
                                 key={item.label}
-                                className="rounded-2xl border border-white/10 bg-slate-950/40 p-3 shadow-inner"
+                                className="rounded-2xl border border-white/12 bg-white/[0.05] p-3"
                               >
                                 <div className="flex items-center justify-between gap-3 text-sm">
                                   <span className="font-semibold text-white">{item.label}</span>
@@ -1080,7 +1051,7 @@ export default function Home() {
                             balanceSheet.liabilities.map(item => (
                               <li
                                 key={item.label}
-                                className="rounded-2xl border border-white/10 bg-slate-950/40 p-3 shadow-inner"
+                                className="rounded-2xl border border-white/12 bg-white/[0.05] p-3"
                               >
                                 <div className="flex items-center justify-between gap-3 text-sm">
                                   <span className="font-semibold text-white">{item.label}</span>
@@ -1101,8 +1072,8 @@ export default function Home() {
         </>
       ) : (
         <Card title="Configuration requise">
-          <p className="text-sm text-slate-300/80">
-            Sélectionnez une organisation pour accéder aux simulations, au livre de transactions et aux états financiers.
+          <p className="text-sm text-slate-200/80">
+            Choisissez une organisation pour afficher les simulations et les rapports.
           </p>
         </Card>
       )}
