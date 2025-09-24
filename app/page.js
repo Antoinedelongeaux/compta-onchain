@@ -61,6 +61,10 @@ export default function Home() {
 
   const isOrgSelected = Boolean(orgId)
 
+  const [walletAddress, setWalletAddress] = useState('')
+const [isConnecting, setIsConnecting] = useState(false)
+
+
   const currencyFormatter = useMemo(
     () =>
       new Intl.NumberFormat('fr-FR', {
@@ -77,6 +81,27 @@ export default function Home() {
     [currencyFormatter],
   )
 
+  const connectWallet = async () => {
+  try {
+    setIsConnecting(true)
+    if (typeof window === 'undefined' || !window.ethereum) {
+      alert('Veuillez installer MetaMask ou Rabby pour continuer.')
+      return
+    }
+    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
+    if (accounts && accounts.length > 0) {
+      setWalletAddress(accounts[0])
+      setFromAddr(accounts[0]) // mise à jour de ton state existant
+    }
+  } catch (err) {
+    console.error('Erreur connexion wallet:', err)
+    alert('Impossible de se connecter au wallet.')
+  } finally {
+    setIsConnecting(false)
+  }
+}
+
+
   useEffect(() => {
     let cancelled = false
     async function loadOrgs() {
@@ -84,7 +109,9 @@ export default function Home() {
       setOrgsError('')
       try {
         const res = await fetch('/api/orgs')
+        
         const data = await res.json().catch(() => null)
+        console.log("Orgs : ",data)
         if (!res.ok) {
           throw new Error(data?.error || 'Impossible de charger les organisations')
         }
@@ -119,6 +146,8 @@ export default function Home() {
     }
     const found = orgs.find(org => org.id === orgId) || null
     setSelectedOrg(found)
+    console.log("Organisation : ",found)
+    setToAddr(found.active_adress)
   }, [orgId, orgs])
 
   const refreshLists = useCallback(async targetOrgId => {
@@ -383,7 +412,7 @@ export default function Home() {
                 <option value="">Sélectionnez une organisation…</option>
                 {orgs.map(org => (
                   <option key={org.id} value={org.id}>
-                    {org.label}
+                    {org.name}
                   </option>
                 ))}
               </select>
@@ -426,6 +455,24 @@ export default function Home() {
           <div className={`${tabPanelClass} mt-4`}>
             {activeTab === 'donation' && (
               <div className="space-y-12">
+
+                <div className="mb-5">
+  {walletAddress ? (
+    <p className="text-sm text-emerald-300">
+      Connecté : <span className="font-mono">{walletAddress}</span>
+    </p>
+  ) : (
+    <button
+      type="button"
+      className={primaryButtonClass}
+      onClick={connectWallet}
+      disabled={isConnecting}
+    >
+      {isConnecting ? 'Connexion…' : 'Connecter MetaMask / Rabby'}
+    </button>
+  )}
+</div>
+
               <section className="grid gap-6 xl:grid-cols-[1.15fr,0.85fr]">
         <Card
   title={(
@@ -441,15 +488,47 @@ export default function Home() {
 >
                   <div className="grid gap-5 md:grid-cols-2">
              
-                    <label className="space-y-2">
-                      <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">Réseau</span>
-                      <input className={inputClass} value={networkName} onChange={e => setNetworkName(e.target.value)} placeholder="base" />
-                    </label>
+                <label className="space-y-2">
+  <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">
+    Réseau
+  </span>
+  <select
+    className={inputClass}
+    value={networkName}
+    onChange={e => setNetworkName(e.target.value)}
+  >
+    <option value="">-- Choisir un réseau --</option>
+    <option value="ethereum">Ethereum</option>
+    <option value="arbitrum">Arbitrum</option>
+    <option value="polygon">Polygon</option>
+    <option value="gnosis">Gnosis</option>
+  </select>
+</label>
+
                    
                     <label className="space-y-2">
-                      <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">Token</span>
-                      <input className={inputClass} value={tokenSymbol} onChange={e => setTokenSymbol(e.target.value)} placeholder="USDC" />
-                    </label>
+                      
+
+                     <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">
+    Jeton
+  </span>
+  <select
+    className={inputClass}
+    value={tokenSymbol}
+    onChange={e => setTokenSymbol(e.target.value)}
+  >
+    <option value="">-- Choisir un jeton --</option>
+    <option value="ethereum">EURe</option>
+    <option value="arbitrum">EURc</option>
+    <option value="polygon">USDC</option>
+    <option value="gnosis">USDT</option>
+    <option value="gnosis">BTC</option>
+    <option value="gnosis">ETH</option>
+  </select>
+</label>
+
+
+
                   
                     <label className="space-y-2">
                       <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">Montant </span>
@@ -459,9 +538,10 @@ export default function Home() {
                   <form className="space-y-5" onSubmit={submitSimulateTx}>
                     
                     <div className="flex flex-wrap items-center gap-3">
-                      <button className={primaryButtonClass} type="submit" disabled={!isOrgSelected}>
-                        Donner
-                      </button>
+                    <button className={primaryButtonClass} type="submit" disabled={!walletAddress}>
+  Donner
+</button>
+
                   
                     </div>
                   </form>
@@ -582,9 +662,7 @@ export default function Home() {
                         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-200/80">Traçabilité</p>
                         <h2 className="mt-2 text-2xl font-semibold text-white">Transactions on-chain</h2>
                       </div>
-                      <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/[0.08] text-xl text-emerald-200">
-                        🪙
-                      </span>
+                
                     </div>
                   )}
                 >
@@ -597,7 +675,7 @@ export default function Home() {
                       {recentTxs.map(t => (
                         <li
                           key={t.id}
-                          className="rounded-2xl border border-white/12 bg-white/[0.05] p-4 transition hover:border-emerald-300/40 hover:bg-emerald-400/10"
+                          className="rounded-2xl  bg-white/[0.05] p-4 transition hover:border-emerald-300/40 hover:bg-emerald-400/10"
                         >
                           <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
                             <span className="font-mono text-emerald-200/80">{t.id}</span>

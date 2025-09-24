@@ -4,7 +4,7 @@ import { supabaseAdmin } from '@/lib/supabaseAdmin'
 async function tryFetchTable(table) {
   const { data, error } = await supabaseAdmin
     .from(table)
-    .select()
+    .select('*')
     .limit(50)
   if (error) {
     const message = error.message || ''
@@ -21,10 +21,7 @@ async function fetchOrgCandidates() {
   for (const table of candidates) {
     const { data } = await tryFetchTable(table)
     if (data) {
-      return data.map(org => ({
-        id: org.id,
-        label: org.name || org.legal_name || org.display_name || org.slug || org.code || org.id,
-      }))
+      return data
     }
   }
   return null
@@ -36,7 +33,7 @@ async function fetchFallbackOrgIds() {
   for (const table of tables) {
     const { data, error } = await supabaseAdmin
       .from(table)
-      .select('org_id')
+      .select('*')
       .not('org_id', 'is', null)
       .limit(100)
     if (error) {

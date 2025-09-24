@@ -13,7 +13,7 @@ const THEME_STYLES = {
   },
 }
 
-export default function Card({ title, children, theme = "dark" }) {
+export default function Card({ title, children, theme = "light" }) {
   const { container, header, body, title: titleClass } =
     THEME_STYLES[theme] ?? THEME_STYLES.dark
 
@@ -31,7 +31,7 @@ export default function Card({ title, children, theme = "dark" }) {
 
   return (
     <section
-      className={`overflow-hidden rounded-3xl border shadow-lg backdrop-blur-sm ${container}`}
+      className={`overflow-hidden  rounded-3xl  shadow-lg backdrop-blur-sm ${container}`}
     >
       {resolvedTitle && (
         <header className={`px-6 py-5 ${header}`}>
