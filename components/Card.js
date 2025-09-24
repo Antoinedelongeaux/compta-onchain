@@ -1,15 +1,15 @@
 const THEME_STYLES = {
   dark: {
-    container: "border-white/12 bg-slate-900",
-    header: "bg-slate-800 text-slate-100",
+    container: "bg-slate-900 text-slate-100",
+    header: "bg-slate-800/80 text-slate-100",
     body: "text-slate-200",
     title: "text-white",
   },
   light: {
-    container: "border-gray-300 bg-white",
-    header: "bg-gray-100 text-gray-900",
-    body: "text-gray-700",
-    title: "text-gray-900",
+    container: "bg-white/90 shadow-lg shadow-slate-200/60 backdrop-blur-sm",
+    header: "bg-gradient-to-r from-white/70 to-white text-slate-900",
+    body: "text-slate-600",
+    title: "text-slate-900",
   },
 }
 
@@ -31,7 +31,7 @@ export default function Card({ title, children, theme = "light" }) {
 
   return (
     <section
-      className={`overflow-hidden  rounded-3xl  shadow-lg backdrop-blur-sm ${container}`}
+      className={`overflow-hidden rounded-3xl ${container}`}
     >
       {resolvedTitle && (
         <header className={`px-6 py-5 ${header}`}>

@@ -4,24 +4,24 @@
 
 @layer base {
   :root {
-    color-scheme: dark;
-    --brand-primary: #38f6c6;
-    --brand-secondary: #60a5fa;
-    --brand-surface: rgba(16, 22, 45, 0.8);
-    --brand-border: rgba(255, 255, 255, 0.12);
+    color-scheme: light;
+    --brand-primary: #0b1f3a;
+    --brand-secondary: #38bdf8;
+    --brand-surface: rgba(255, 255, 255, 0.85);
+    --brand-border: rgba(15, 23, 42, 0.12);
   }
 
   html,
   body {
     min-height: 100%;
-    background-color: #020617;
-    color: #f8fafc;
+    background-color: #f5f7fb;
+    color: #0f172a;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     -webkit-font-smoothing: antialiased;
     background-image:
-      radial-gradient(circle at 0% 0%, rgba(56, 246, 198, 0.12), transparent 45%),
-      radial-gradient(circle at 100% 0%, rgba(96, 165, 250, 0.12), transparent 40%),
-      radial-gradient(circle at 50% 100%, rgba(56, 246, 198, 0.08), transparent 50%);
+      radial-gradient(circle at 5% -10%, rgba(59, 130, 246, 0.12), transparent 45%),
+      radial-gradient(circle at 95% -5%, rgba(14, 116, 144, 0.12), transparent 45%),
+      radial-gradient(circle at 50% 90%, rgba(56, 189, 248, 0.08), transparent 55%);
     background-attachment: fixed;
   }
 
@@ -32,11 +32,11 @@
   h5,
   h6 {
     font-weight: 600;
-    color: #fff;
+    color: #0f172a;
   }
 
   p {
-    color: rgba(226, 232, 240, 0.8);
+    color: rgba(71, 85, 105, 0.85);
   }
 
   input,
@@ -48,7 +48,7 @@
   }
 
   ::selection {
-    background: rgba(56, 246, 198, 0.35);
-    color: #0f172a;
+    background: rgba(59, 130, 246, 0.25);
+    color: #0b1f3a;
   }
 }
