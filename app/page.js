@@ -12,18 +12,22 @@ const tabs = [
 ]
 
 const inputClass =
-  'w-full rounded-2xl border border-white/15 bg-white/[0.04] px-4 py-2.5 text-sm text-slate-100 placeholder:text-slate-400/75 focus:border-emerald-300 focus:ring-2 focus:ring-emerald-200/70 focus:ring-offset-2 focus:ring-offset-slate-950'
+  'w-full rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-sky-400 focus:ring-2 focus:ring-sky-200 focus:ring-offset-1 focus:ring-offset-white'
 
 const primaryButtonClass =
-  'inline-flex items-center justify-center gap-2 rounded-full bg-emerald-400 px-5 py-2.5 text-sm font-semibold text-slate-950 shadow-sm transition hover:bg-emerald-300 focus:ring-2 focus:ring-emerald-200 focus:ring-offset-2 focus:ring-offset-slate-950 disabled:cursor-not-allowed disabled:opacity-60'
+  'inline-flex items-center justify-center gap-2 rounded-full bg-sky-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-500 focus:ring-2 focus:ring-sky-200 focus:ring-offset-2 focus:ring-offset-white disabled:cursor-not-allowed disabled:opacity-60'
 
 const tabsContainerClass =
-  'flex w-full flex-wrap gap-2 rounded-3xl border border-white/10 bg-white/[0.05] p-1 backdrop-blur-sm'
+  'flex w-full flex-wrap gap-2 rounded-3xl bg-white p-1 shadow-sm shadow-slate-200/70'
 
 const tabButtonBaseClass =
-  'flex-1 rounded-2xl px-4 py-2.5 text-sm font-medium text-slate-300 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-200 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950'
+  'flex-1 rounded-2xl px-4 py-2.5 text-sm font-medium text-slate-500 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2 focus-visible:ring-offset-white'
 
-const tabPanelClass = 'rounded-3xl border border-white/12 bg-white/[0.03] p-6 backdrop-blur-sm'
+const tabPanelClass = 'rounded-3xl bg-white p-6 shadow-sm shadow-slate-200/70'
+
+const tileClass = 'rounded-2xl bg-slate-50/90 p-4 shadow-sm shadow-slate-200/80'
+
+const compactTileClass = 'rounded-2xl bg-slate-50/90 p-3 shadow-sm shadow-slate-200/80'
 
 export default function Home() {
   const [orgs, setOrgs] = useState([])
@@ -232,13 +236,13 @@ const [isConnecting, setIsConnecting] = useState(false)
   const renderInsightsContent = useCallback(
     factory => {
       if (insightsLoading) {
-        return <p className="text-sm text-slate-300/70">Calcul en cours…</p>
+        return <p className="text-sm text-slate-500">Calcul en cours…</p>
       }
       if (insightsError) {
-        return <p className="text-sm text-rose-300">{insightsError}</p>
+        return <p className="text-sm text-rose-500">{insightsError}</p>
       }
       if (!insights) {
-        return <p className="text-sm text-slate-300/70">Aucune donnée disponible pour cette organisation.</p>
+        return <p className="text-sm text-slate-500">Aucune donnée disponible pour cette organisation.</p>
       }
       return factory()
     },
@@ -399,15 +403,14 @@ const [isConnecting, setIsConnecting] = useState(false)
         
       >
         {isLoadingOrgs ? (
-          <p className="text-sm text-slate-300/80">Chargement des organisations…</p>
+          <p className="text-sm text-slate-500">Chargement des organisations…</p>
         ) : orgsError ? (
-          <p className="text-sm text-rose-300">{orgsError}</p>
+          <p className="text-sm text-rose-500">{orgsError}</p>
         ) : orgs.length === 0 ? (
-          <p className="text-sm text-slate-200/80">Aucune organisation trouvée. Ajoutez-en une pour commencer.</p>
+          <p className="text-sm text-slate-500">Aucune organisation trouvée. Ajoutez-en une pour commencer.</p>
         ) : (
           <div className="space-y-4">
             <label className="space-y-2">
-          
               <select className={inputClass} value={orgId} onChange={handleOrgChange}>
                 <option value="">Sélectionnez une organisation…</option>
                 {orgs.map(org => (
@@ -418,14 +421,11 @@ const [isConnecting, setIsConnecting] = useState(false)
               </select>
             </label>
             {selectedOrg ? (
-              <div className="rounded-2xl border border-white/12 bg-white/[0.05] p-4 text-sm text-slate-200/85">
-             
-                <p className="mt-2 text-sm font-semibold text-white">{selectedOrg.label}</p>
-       
-
+              <div className={`${tileClass} text-sm text-slate-600`}>
+                <p className="mt-2 text-sm font-semibold text-slate-900">{selectedOrg.label}</p>
               </div>
             ) : (
-              <p className="text-sm text-slate-200/80">Sélectionnez une organisation pour déverrouiller les onglets.</p>
+              <p className="text-sm text-slate-500">Sélectionnez une organisation pour déverrouiller les onglets.</p>
             )}
           </div>
         )}
@@ -443,8 +443,8 @@ const [isConnecting, setIsConnecting] = useState(false)
                   onClick={() => setActiveTab(tab.id)}
                   className={`${tabButtonBaseClass} ${
                     isActive
-                      ? 'bg-slate-950/60 text-white shadow-sm'
-                      : 'hover:bg-white/[0.08] hover:text-white'
+                      ? 'bg-sky-600 text-white shadow-sm shadow-sky-200/60'
+                      : 'hover:bg-slate-100 hover:text-slate-700'
                   }`}
                 >
                   {tab.label}
@@ -458,7 +458,7 @@ const [isConnecting, setIsConnecting] = useState(false)
 
                 <div className="mb-5">
   {walletAddress ? (
-    <p className="text-sm text-emerald-300">
+    <p className="text-sm text-emerald-600">
       Connecté : <span className="font-mono">{walletAddress}</span>
     </p>
   ) : (
@@ -473,82 +473,58 @@ const [isConnecting, setIsConnecting] = useState(false)
   )}
 </div>
 
-              <section className="grid gap-6 xl:grid-cols-[1.15fr,0.85fr]">
-        <Card
-  title={(
-    <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-      <div>
-        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-200/80">
-          Make a donation
-        </p>
-      </div>
-    </div>
-  )}
-  theme="light"
->
-                  <div className="grid gap-5 md:grid-cols-2">
-             
-                <label className="space-y-2">
-  <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">
-    Réseau
-  </span>
-  <select
-    className={inputClass}
-    value={networkName}
-    onChange={e => setNetworkName(e.target.value)}
-  >
-    <option value="">-- Choisir un réseau --</option>
-    <option value="ethereum">Ethereum</option>
-    <option value="arbitrum">Arbitrum</option>
-    <option value="polygon">Polygon</option>
-    <option value="gnosis">Gnosis</option>
-  </select>
-</label>
-
-                   
-                    <label className="space-y-2">
-                      
-
-                     <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">
-    Jeton
-  </span>
-  <select
-    className={inputClass}
-    value={tokenSymbol}
-    onChange={e => setTokenSymbol(e.target.value)}
-  >
-    <option value="">-- Choisir un jeton --</option>
-    <option value="ethereum">EURe</option>
-    <option value="arbitrum">EURc</option>
-    <option value="polygon">USDC</option>
-    <option value="gnosis">USDT</option>
-    <option value="gnosis">BTC</option>
-    <option value="gnosis">ETH</option>
-  </select>
-</label>
-
-
-
-                  
-                    <label className="space-y-2">
-                      <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300/80">Montant </span>
-                      <input className={inputClass} value={amount} onChange={e => setAmount(e.target.value)} />
-                    </label>
+          <section className="grid gap-6 xl:grid-cols-[1.15fr,0.85fr]">
+            <Card
+              title={(
+                <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-600">Make a donation</p>
+                    <h2 className="mt-2 text-2xl font-semibold text-slate-900">Simulation de don</h2>
+                    <p className="mt-2 text-sm text-slate-600">
+                      Configurez votre contribution et vérifiez les paramètres avant de lancer la transaction sur la blockchain.
+                    </p>
                   </div>
-                  <form className="space-y-5" onSubmit={submitSimulateTx}>
-                    
-                    <div className="flex flex-wrap items-center gap-3">
-                    <button className={primaryButtonClass} type="submit" disabled={!walletAddress}>
-  Donner
-</button>
-
-                  
-                    </div>
-                  </form>
-                </Card>
-
-           
-              </section>
+                </div>
+              )}
+            >
+              <form className="space-y-6" onSubmit={submitSimulateTx}>
+                <div className="grid gap-5 md:grid-cols-2">
+                  <label className="space-y-2">
+                    <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-500">Réseau</span>
+                    <select className={inputClass} value={networkName} onChange={e => setNetworkName(e.target.value)}>
+                      <option value="">-- Choisir un réseau --</option>
+                      <option value="ethereum">Ethereum</option>
+                      <option value="arbitrum">Arbitrum</option>
+                      <option value="polygon">Polygon</option>
+                      <option value="gnosis">Gnosis</option>
+                    </select>
+                  </label>
+                  <label className="space-y-2">
+                    <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-500">Jeton</span>
+                    <select className={inputClass} value={tokenSymbol} onChange={e => setTokenSymbol(e.target.value)}>
+                      <option value="">-- Choisir un jeton --</option>
+                      <option value="ethereum">EURe</option>
+                      <option value="arbitrum">EURc</option>
+                      <option value="polygon">USDC</option>
+                      <option value="gnosis">USDT</option>
+                      <option value="gnosis">BTC</option>
+                      <option value="gnosis">ETH</option>
+                    </select>
+                  </label>
+                  <label className="space-y-2 md:col-span-2">
+                    <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-500">Montant</span>
+                    <input className={inputClass} value={amount} onChange={e => setAmount(e.target.value)} />
+                  </label>
+                </div>
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <p className="text-xs text-slate-500">Le montant est exprimé dans la devise choisie ci-dessus.</p>
+                  <button className={primaryButtonClass} type="submit" disabled={!walletAddress}>
+                    Donner
+                  </button>
+                </div>
+              </form>
+            </Card>
+          </section>
 
               
 
@@ -567,9 +543,9 @@ const [isConnecting, setIsConnecting] = useState(false)
                 <Card
                   title={(
                     <div>
-                      <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-200/80">Trésorerie</p>
-                      <h2 className="mt-2 text-2xl font-semibold text-white">Flux de trésorerie</h2>
-                      <p className="mt-2 text-sm text-slate-200/80">
+                      <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-600">Trésorerie</p>
+                      <h2 className="mt-2 text-2xl font-semibold text-slate-900">Flux de trésorerie</h2>
+                      <p className="mt-2 text-sm text-slate-600">
                         Synthèse des entrées et sorties pour {selectedOrg?.label || 'l’organisation sélectionnée'}.
                       </p>
                     </div>
@@ -577,31 +553,31 @@ const [isConnecting, setIsConnecting] = useState(false)
                 >
                   {renderInsightsContent(() => {
                     if (!cashflow || (cashflow.accounts?.length ?? 0) === 0) {
-                      return <p className="text-sm text-slate-200/80">Aucun mouvement enregistré.</p>
+                      return <p className="text-sm text-slate-600">Aucun mouvement enregistré.</p>
                     }
                     return (
                       <div className="space-y-6">
                         <div className="grid gap-4 sm:grid-cols-3">
-                          <div className="rounded-2xl border border-white/12 bg-white/[0.05] p-4">
-                            <p className="text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-emerald-200/80">Entrées</p>
-                            <p className="mt-3 text-xl font-semibold text-white">{formatCurrency(cashflow.inflows)}</p>
+                          <div className={tileClass}>
+                            <p className="text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-emerald-600">Entrées</p>
+                            <p className="mt-3 text-xl font-semibold text-slate-900">{formatCurrency(cashflow.inflows)}</p>
                           </div>
-                          <div className="rounded-2xl border border-white/12 bg-white/[0.05] p-4">
-                            <p className="text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-sky-200/80">Sorties</p>
-                            <p className="mt-3 text-xl font-semibold text-white">{formatCurrency(cashflow.outflows)}</p>
+                          <div className={tileClass}>
+                            <p className="text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-sky-600">Sorties</p>
+                            <p className="mt-3 text-xl font-semibold text-slate-900">{formatCurrency(cashflow.outflows)}</p>
                           </div>
-                          <div className="rounded-2xl border border-white/12 bg-white/[0.05] p-4">
-                            <p className="text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-emerald-200/80">Variation nette</p>
+                          <div className={tileClass}>
+                            <p className="text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-emerald-600">Variation nette</p>
                             <p
                               className={`mt-3 text-xl font-semibold ${
-                                cashflow.netChange >= 0 ? 'text-emerald-200' : 'text-rose-200'
+                                cashflow.netChange >= 0 ? 'text-emerald-500' : 'text-rose-500'
                               }`}
                             >
                               {formatCurrency(cashflow.netChange)}
                             </p>
                           </div>
                         </div>
-                        <p className="text-xs text-slate-300/70">
+                        <p className="text-xs text-slate-500">
                           Basé sur {cashflow.accounts.length} compte
                           {cashflow.accounts.length > 1 ? 's' : ''} de classe 5.
                         </p>
@@ -614,25 +590,22 @@ const [isConnecting, setIsConnecting] = useState(false)
                   {renderInsightsContent(() => (
                     <ul className="space-y-3">
                       {cashflow.accounts.map(acc => (
-                        <li
-                          key={acc.code}
-                          className="rounded-2xl border border-white/12 bg-white/[0.05] p-4 transition hover:border-emerald-300/40 hover:bg-emerald-400/10"
-                        >
+                        <li key={acc.code} className={`${tileClass} transition hover:bg-emerald-50`}>
                           <div className="flex flex-wrap items-start justify-between gap-3">
                             <div>
-                              <p className="text-sm font-semibold text-white">
+                              <p className="text-sm font-semibold text-slate-900">
                                 {acc.code}
-                                <span className="ml-2 text-xs font-medium text-slate-300/70">{acc.name}</span>
+                                <span className="ml-2 text-xs font-medium text-slate-500">{acc.name}</span>
                               </p>
-                              <p className="mt-1 text-xs text-slate-300/70">
+                              <p className="mt-1 text-xs text-slate-500">
                                 Débits {formatCurrency(acc.debit)} • Crédits {formatCurrency(acc.credit)}
                               </p>
                             </div>
                             <div className="text-right text-sm font-semibold">
-                              <p className={acc.net >= 0 ? 'text-emerald-300' : 'text-rose-300'}>
+                              <p className={acc.net >= 0 ? 'text-emerald-600' : 'text-rose-500'}>
                                 {formatCurrency(acc.net)}
                               </p>
-                              <p className="text-xs text-slate-400/70">
+                              <p className="text-xs text-slate-500">
                                 {acc.net >= 0 ? 'Entrée nette' : 'Sortie nette'}
                               </p>
                             </div>
@@ -653,45 +626,42 @@ const [isConnecting, setIsConnecting] = useState(false)
                   Actualiser
                 </button>
               </div>
-              {recentError && <p className="text-sm text-rose-300">{recentError}</p>}
+              {recentError && <p className="text-sm text-rose-500">{recentError}</p>}
               <div className="grid gap-6 xl:grid-cols-2">
                 <Card
                   title={(
                     <div className="flex items-start justify-between gap-4">
                       <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-200/80">Traçabilité</p>
-                        <h2 className="mt-2 text-2xl font-semibold text-white">Transactions on-chain</h2>
+                        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-600">Traçabilité</p>
+                        <h2 className="mt-2 text-2xl font-semibold text-slate-900">Transactions on-chain</h2>
                       </div>
                 
                     </div>
                   )}
                 >
                   {recentLoading ? (
-                    <p className="text-sm text-slate-200/80">Chargement…</p>
+                    <p className="text-sm text-slate-600">Chargement…</p>
                   ) : recentTxs.length === 0 ? (
-                    <p className="text-sm text-slate-200/80">Aucune transaction simulée.</p>
+                    <p className="text-sm text-slate-600">Aucune transaction simulée.</p>
                   ) : (
                     <ul className="space-y-3">
                       {recentTxs.map(t => (
-                        <li
-                          key={t.id}
-                          className="rounded-2xl  bg-white/[0.05] p-4 transition hover:border-emerald-300/40 hover:bg-emerald-400/10"
-                        >
+                        <li key={t.id} className={`${tileClass} transition hover:bg-emerald-50`}>
                           <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
-                            <span className="font-mono text-emerald-200/80">{t.id}</span>
-                            <span className="rounded-full bg-emerald-400/20 px-2 py-1 text-emerald-200/90">
+                            <span className="font-mono text-emerald-600">{t.id}</span>
+                            <span className="rounded-full bg-emerald-100 px-2 py-1 text-emerald-600">
                               {t.network_name || networkName || 'réseau inconnu'}
                             </span>
                           </div>
                           <div className="mt-3 flex flex-wrap items-baseline gap-2">
-                            <p className="text-lg font-semibold text-white">{t.amount}</p>
-                            <span className="text-sm text-emerald-200/80">{t.token_symbol}</span>
+                            <p className="text-lg font-semibold text-slate-900">{t.amount}</p>
+                            <span className="text-sm text-emerald-600">{t.token_symbol}</span>
                           </div>
-                          <p className="mt-2 truncate text-xs text-slate-300/70">
+                          <p className="mt-2 truncate text-xs text-slate-500">
                             {t.from_addr} → {t.to_addr}
                           </p>
                           {t.block_time && (
-                            <p className="mt-1 text-[0.65rem] text-slate-400/70">
+                            <p className="mt-1 text-[0.65rem] text-slate-500">
                               {new Date(t.block_time).toLocaleString('fr-FR')}
                             </p>
                           )}
@@ -705,33 +675,33 @@ const [isConnecting, setIsConnecting] = useState(false)
                   title={(
                     <div className="flex items-start justify-between gap-4">
                       <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-sky-200/80">Journalisation</p>
-                        <h2 className="mt-2 text-2xl font-semibold text-white">Écritures comptables</h2>
+                        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-sky-600">Journalisation</p>
+                        <h2 className="mt-2 text-2xl font-semibold text-slate-900">Écritures comptables</h2>
                       </div>
-                      <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/[0.08] text-xl text-sky-200">
+                      <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 text-xl text-sky-500">
                         📒
                       </span>
                     </div>
                   )}
                 >
                   {recentLoading ? (
-                    <p className="text-sm text-slate-200/80">Chargement…</p>
+                    <p className="text-sm text-slate-600">Chargement…</p>
                   ) : recentEntries.length === 0 ? (
-                    <p className="text-sm text-slate-200/80">Aucune écriture synchronisée.</p>
+                    <p className="text-sm text-slate-600">Aucune écriture synchronisée.</p>
                   ) : (
                     <ul className="space-y-3">
                       {recentEntries.map(e => (
                         <li
                           key={e.id}
-                          className="rounded-2xl border border-white/12 bg-white/[0.05] p-4 transition hover:border-sky-300/40 hover:bg-sky-400/10"
+                          className={`${tileClass} transition hover:bg-sky-50`}
                         >
                           <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
-                            <span className="font-mono text-sky-200/80">{e.id}</span>
-                            <span className="rounded-full bg-sky-400/20 px-2 py-1 text-sky-200/90">Journal {e.journal_code}</span>
+                            <span className="font-mono text-sky-600">{e.id}</span>
+                            <span className="rounded-full bg-sky-100 px-2 py-1 text-sky-600">Journal {e.journal_code}</span>
                           </div>
                           <div className="mt-3 flex flex-wrap items-baseline gap-2">
-                            <p className="text-lg font-semibold text-white">{e.entry_date}</p>
-                            <span className="text-sm text-slate-300/75">Ref {e.ref}</span>
+                            <p className="text-lg font-semibold text-slate-900">{e.entry_date}</p>
+                            <span className="text-sm text-slate-500">Ref {e.ref}</span>
                           </div>
                         </li>
                       ))}
@@ -753,9 +723,9 @@ const [isConnecting, setIsConnecting] = useState(false)
                 <Card
                   title={(
                     <div>
-                      <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-200/80">Résultat</p>
-                      <h2 className="mt-2 text-2xl font-semibold text-white">P&L</h2>
-                      <p className="mt-2 text-sm text-slate-200/80">
+                      <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-600">Résultat</p>
+                      <h2 className="mt-2 text-2xl font-semibold text-slate-900">P&L</h2>
+                      <p className="mt-2 text-sm text-slate-600">
                         Aperçu des produits et charges pour {selectedOrg?.label || 'l’organisation analysée'}.
                       </p>
                     </div>
@@ -763,21 +733,21 @@ const [isConnecting, setIsConnecting] = useState(false)
                 >
                   {renderInsightsContent(() => {
                     if (!plData) {
-                      return <p className="text-sm text-slate-200/80">Aucune donnée de résultat.</p>
+                      return <p className="text-sm text-slate-600">Aucune donnée de résultat.</p>
                     }
                     return (
                       <div className="grid gap-4 sm:grid-cols-3">
-                        <div className="rounded-2xl border border-white/12 bg-white/[0.05] p-4">
-                          <p className="text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-emerald-200/80">Produits</p>
-                          <p className="mt-3 text-xl font-semibold text-white">{formatCurrency(plData.revenueTotal)}</p>
+                        <div className={tileClass}>
+                          <p className="text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-emerald-600">Produits</p>
+                          <p className="mt-3 text-xl font-semibold text-slate-900">{formatCurrency(plData.revenueTotal)}</p>
                         </div>
-                        <div className="rounded-2xl border border-white/12 bg-white/[0.05] p-4">
-                          <p className="text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-sky-200/80">Charges</p>
-                          <p className="mt-3 text-xl font-semibold text-white">{formatCurrency(plData.expenseTotal)}</p>
+                        <div className={tileClass}>
+                          <p className="text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-sky-600">Charges</p>
+                          <p className="mt-3 text-xl font-semibold text-slate-900">{formatCurrency(plData.expenseTotal)}</p>
                         </div>
-                        <div className="rounded-2xl border border-white/12 bg-white/[0.05] p-4">
-                          <p className="text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-emerald-200/80">Résultat net</p>
-                          <p className={`mt-3 text-xl font-semibold ${plData.net >= 0 ? 'text-emerald-200' : 'text-rose-200'}`}>
+                        <div className={tileClass}>
+                          <p className="text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-emerald-600">Résultat net</p>
+                          <p className={`mt-3 text-xl font-semibold ${plData.net >= 0 ? 'text-emerald-500' : 'text-rose-500'}`}>
                             {formatCurrency(plData.net)}
                           </p>
                         </div>
@@ -790,42 +760,42 @@ const [isConnecting, setIsConnecting] = useState(false)
                   {renderInsightsContent(() => (
                     <div className="grid gap-6 md:grid-cols-2">
                       <div>
-                        <h3 className="text-sm font-semibold uppercase tracking-[0.3em] text-emerald-200/80">Revenus (classe 7)</h3>
+                        <h3 className="text-sm font-semibold uppercase tracking-[0.3em] text-emerald-600">Revenus (classe 7)</h3>
                         <ul className="mt-3 space-y-3">
                           {plData.revenues.length === 0 ? (
-                            <li className="text-sm text-slate-300/80">Aucun produit enregistré.</li>
+                            <li className="text-sm text-slate-500">Aucun produit enregistré.</li>
                           ) : (
                             plData.revenues.map(rev => (
                               <li
                                 key={rev.code}
-                                className="rounded-2xl border border-white/12 bg-white/[0.05] p-3"
+                                className={compactTileClass}
                               >
                                 <div className="flex items-center justify-between gap-3 text-sm">
-                                  <span className="font-semibold text-white">{rev.code}</span>
-                                  <span className="font-semibold text-emerald-200">{formatCurrency(rev.amount)}</span>
+                                  <span className="font-semibold text-slate-900">{rev.code}</span>
+                                  <span className="font-semibold text-emerald-500">{formatCurrency(rev.amount)}</span>
                                 </div>
-                                <p className="mt-1 text-xs text-slate-300/70">{rev.name}</p>
+                                <p className="mt-1 text-xs text-slate-500">{rev.name}</p>
                               </li>
                             ))
                           )}
                         </ul>
                       </div>
                       <div>
-                        <h3 className="text-sm font-semibold uppercase tracking-[0.3em] text-sky-200/80">Charges (classe 6)</h3>
+                        <h3 className="text-sm font-semibold uppercase tracking-[0.3em] text-sky-600">Charges (classe 6)</h3>
                         <ul className="mt-3 space-y-3">
                           {plData.expenses.length === 0 ? (
-                            <li className="text-sm text-slate-300/80">Aucune charge saisie.</li>
+                            <li className="text-sm text-slate-500">Aucune charge saisie.</li>
                           ) : (
                             plData.expenses.map(exp => (
                               <li
                                 key={exp.code}
-                                className="rounded-2xl border border-white/12 bg-white/[0.05] p-3"
+                                className={compactTileClass}
                               >
                                 <div className="flex items-center justify-between gap-3 text-sm">
-                                  <span className="font-semibold text-white">{exp.code}</span>
-                                  <span className="font-semibold text-rose-200">{formatCurrency(exp.amount)}</span>
+                                  <span className="font-semibold text-slate-900">{exp.code}</span>
+                                  <span className="font-semibold text-rose-500">{formatCurrency(exp.amount)}</span>
                                 </div>
-                                <p className="mt-1 text-xs text-slate-300/70">{exp.name}</p>
+                                <p className="mt-1 text-xs text-slate-500">{exp.name}</p>
                               </li>
                             ))
                           )}
@@ -849,9 +819,9 @@ const [isConnecting, setIsConnecting] = useState(false)
                 <Card
                   title={(
                     <div>
-                      <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-200/80">Structure financière</p>
-                      <h2 className="mt-2 text-2xl font-semibold text-white">Bilan</h2>
-                      <p className="mt-2 text-sm text-slate-200/80">
+                      <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-600">Structure financière</p>
+                      <h2 className="mt-2 text-2xl font-semibold text-slate-900">Bilan</h2>
+                      <p className="mt-2 text-sm text-slate-600">
                         Répartition des actifs et passifs pour {selectedOrg?.label || 'l’organisation suivie'}.
                       </p>
                     </div>
@@ -859,31 +829,31 @@ const [isConnecting, setIsConnecting] = useState(false)
                 >
                   {renderInsightsContent(() => {
                     if (!balanceSheet) {
-                      return <p className="text-sm text-slate-200/80">Aucune donnée de bilan.</p>
+                      return <p className="text-sm text-slate-600">Aucune donnée de bilan.</p>
                     }
                     return (
                       <div className="space-y-4">
                         <div className="grid gap-4 sm:grid-cols-3">
-                          <div className="rounded-2xl border border-white/12 bg-white/[0.05] p-4">
-                            <p className="text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-emerald-200/80">Actif total</p>
-                            <p className="mt-3 text-xl font-semibold text-white">{formatCurrency(balanceSheet.totalAssets)}</p>
+                          <div className={tileClass}>
+                            <p className="text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-emerald-600">Actif total</p>
+                            <p className="mt-3 text-xl font-semibold text-slate-900">{formatCurrency(balanceSheet.totalAssets)}</p>
                           </div>
-                          <div className="rounded-2xl border border-white/12 bg-white/[0.05] p-4">
-                            <p className="text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-sky-200/80">Passif total</p>
-                            <p className="mt-3 text-xl font-semibold text-white">{formatCurrency(balanceSheet.totalLiabilities)}</p>
+                          <div className={tileClass}>
+                            <p className="text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-sky-600">Passif total</p>
+                            <p className="mt-3 text-xl font-semibold text-slate-900">{formatCurrency(balanceSheet.totalLiabilities)}</p>
                           </div>
-                          <div className="rounded-2xl border border-white/12 bg-white/[0.05] p-4">
-                            <p className="text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-emerald-200/80">Écart</p>
+                          <div className={tileClass}>
+                            <p className="text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-emerald-600">Écart</p>
                             <p
                               className={`mt-3 text-xl font-semibold ${
-                                Math.abs(balanceSheet.balance) < 1e-2 ? 'text-emerald-200' : 'text-amber-200'
+                                Math.abs(balanceSheet.balance) < 1e-2 ? 'text-emerald-500' : 'text-amber-500'
                               }`}
                             >
                               {formatCurrency(balanceSheet.balance)}
                             </p>
                           </div>
                         </div>
-                        <p className="text-xs text-slate-300/70">
+                        <p className="text-xs text-slate-500">
                           Le résultat net (P&L) est intégré côté passif afin d’aligner le bilan.
                         </p>
                       </div>
@@ -895,19 +865,19 @@ const [isConnecting, setIsConnecting] = useState(false)
                   {renderInsightsContent(() => (
                     <div className="grid gap-6 md:grid-cols-2">
                       <div>
-                        <h3 className="text-sm font-semibold uppercase tracking-[0.3em] text-emerald-200/80">Actif</h3>
+                        <h3 className="text-sm font-semibold uppercase tracking-[0.3em] text-emerald-600">Actif</h3>
                         <ul className="mt-3 space-y-3">
                           {balanceSheet.assets.length === 0 ? (
-                            <li className="text-sm text-slate-300/80">Aucun poste d’actif identifié.</li>
+                            <li className="text-sm text-slate-500">Aucun poste d’actif identifié.</li>
                           ) : (
                             balanceSheet.assets.map(item => (
                               <li
                                 key={item.label}
-                                className="rounded-2xl border border-white/12 bg-white/[0.05] p-3"
+                                className={compactTileClass}
                               >
                                 <div className="flex items-center justify-between gap-3 text-sm">
-                                  <span className="font-semibold text-white">{item.label}</span>
-                                  <span className="font-semibold text-emerald-200">{formatCurrency(item.amount)}</span>
+                                  <span className="font-semibold text-slate-900">{item.label}</span>
+                                  <span className="font-semibold text-emerald-500">{formatCurrency(item.amount)}</span>
                                 </div>
                               </li>
                             ))
@@ -915,19 +885,19 @@ const [isConnecting, setIsConnecting] = useState(false)
                         </ul>
                       </div>
                       <div>
-                        <h3 className="text-sm font-semibold uppercase tracking-[0.3em] text-sky-200/80">Passif</h3>
+                        <h3 className="text-sm font-semibold uppercase tracking-[0.3em] text-sky-600">Passif</h3>
                         <ul className="mt-3 space-y-3">
                           {balanceSheet.liabilities.length === 0 ? (
-                            <li className="text-sm text-slate-300/80">Aucun poste de passif identifié.</li>
+                            <li className="text-sm text-slate-500">Aucun poste de passif identifié.</li>
                           ) : (
                             balanceSheet.liabilities.map(item => (
                               <li
                                 key={item.label}
-                                className="rounded-2xl border border-white/12 bg-white/[0.05] p-3"
+                                className={compactTileClass}
                               >
                                 <div className="flex items-center justify-between gap-3 text-sm">
-                                  <span className="font-semibold text-white">{item.label}</span>
-                                  <span className="font-semibold text-sky-200">{formatCurrency(item.amount)}</span>
+                                  <span className="font-semibold text-slate-900">{item.label}</span>
+                                  <span className="font-semibold text-sky-500">{formatCurrency(item.amount)}</span>
                                 </div>
                               </li>
                             ))
@@ -944,7 +914,7 @@ const [isConnecting, setIsConnecting] = useState(false)
         </>
       ) : (
         <Card title="Configuration requise">
-          <p className="text-sm text-slate-200/80">
+          <p className="text-sm text-slate-600">
             Choisissez une organisation pour afficher les simulations et les rapports.
           </p>
         </Card>
