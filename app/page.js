@@ -168,6 +168,7 @@ const [isConnecting, setIsConnecting] = useState(false)
       const txJson = await txRes.json().catch(() => null)
       if (txRes.ok) {
         setRecentTxs(Array.isArray(txJson) ? txJson : [])
+        console.log("Transactions : ", Array.isArray(txJson) ? txJson : [])
       } else {
         const message = txJson?.error || 'Impossible de récupérer les transactions'
         setRecentTxs([])
@@ -619,98 +620,101 @@ const [isConnecting, setIsConnecting] = useState(false)
             </div>
             )}
 
-            {activeTab === 'transactions' && (
-              <div className="space-y-6">
-              <div className="flex flex-wrap justify-end gap-2">
-                <button className={primaryButtonClass} type="button" onClick={handleRefreshBook} disabled={recentLoading}>
-                  Actualiser
-                </button>
-              </div>
-              {recentError && <p className="text-sm text-rose-500">{recentError}</p>}
-              <div className="grid gap-6 xl:grid-cols-2">
-                <Card
-                  title={(
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-600">Traçabilité</p>
-                        <h2 className="mt-2 text-2xl font-semibold text-slate-900">Transactions on-chain</h2>
-                      </div>
-                
-                    </div>
-                  )}
-                >
-                  {recentLoading ? (
-                    <p className="text-sm text-slate-600">Chargement…</p>
-                  ) : recentTxs.length === 0 ? (
-                    <p className="text-sm text-slate-600">Aucune transaction simulée.</p>
-                  ) : (
-                    <ul className="space-y-3">
-                      {recentTxs.map(t => (
-                        <li key={t.id} className={`${tileClass} transition hover:bg-emerald-50`}>
-                          <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
-                            <span className="font-mono text-emerald-600">{t.id}</span>
-                            <span className="rounded-full bg-emerald-100 px-2 py-1 text-emerald-600">
-                              {t.network_name || networkName || 'réseau inconnu'}
-                            </span>
-                          </div>
-                          <div className="mt-3 flex flex-wrap items-baseline gap-2">
-                            <p className="text-lg font-semibold text-slate-900">{t.amount}</p>
-                            <span className="text-sm text-emerald-600">{t.token_symbol}</span>
-                          </div>
-                          <p className="mt-2 truncate text-xs text-slate-500">
-                            {t.from_addr} → {t.to_addr}
-                          </p>
-                          {t.block_time && (
-                            <p className="mt-1 text-[0.65rem] text-slate-500">
-                              {new Date(t.block_time).toLocaleString('fr-FR')}
-                            </p>
-                          )}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </Card>
+           {activeTab === 'transactions' && (
+  <div className="space-y-6">
+    <div className="flex flex-wrap justify-end gap-2">
+      <button
+        className={primaryButtonClass}
+        type="button"
+        onClick={handleRefreshBook}
+        disabled={recentLoading}
+      >
+        Actualiser
+      </button>
+    </div>
+    {recentError && <p className="text-sm text-rose-500">{recentError}</p>}
 
-                <Card
-                  title={(
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-sky-600">Journalisation</p>
-                        <h2 className="mt-2 text-2xl font-semibold text-slate-900">Écritures comptables</h2>
-                      </div>
-                      <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 text-xl text-sky-500">
-                        📒
-                      </span>
-                    </div>
-                  )}
-                >
-                  {recentLoading ? (
-                    <p className="text-sm text-slate-600">Chargement…</p>
-                  ) : recentEntries.length === 0 ? (
-                    <p className="text-sm text-slate-600">Aucune écriture synchronisée.</p>
-                  ) : (
-                    <ul className="space-y-3">
-                      {recentEntries.map(e => (
-                        <li
-                          key={e.id}
-                          className={`${tileClass} transition hover:bg-sky-50`}
-                        >
-                          <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
-                            <span className="font-mono text-sky-600">{e.id}</span>
-                            <span className="rounded-full bg-sky-100 px-2 py-1 text-sky-600">Journal {e.journal_code}</span>
-                          </div>
-                          <div className="mt-3 flex flex-wrap items-baseline gap-2">
-                            <p className="text-lg font-semibold text-slate-900">{e.entry_date}</p>
-                            <span className="text-sm text-slate-500">Ref {e.ref}</span>
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </Card>
-              </div>
+    <Card
+      title={(
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-600">Traçabilité</p>
+            <h2 className="mt-2 text-2xl font-semibold text-slate-900">Transactions on-chain</h2>
+          </div>
+        </div>
+      )}
+    >
+      {recentLoading ? (
+        <p className="text-sm text-slate-600">Chargement…</p>
+      ) : recentTxs.length === 0 ? (
+        <p className="text-sm text-slate-600">Aucune transaction simulée.</p>
+      ) : (
+        (() => {
+          // Table de conversion en dur
+          const rates = {
+            EUR: 1,
+            EURe: 1,
+            EURc: 1,
+            USDC: 0.94, // exemple
+            USDT: 0.94,
+            USD: 0.94,
+            BTC: 60000, // exemple
+            ETH: 3500   // exemple
+          }
+
+          const txsWithEur = recentTxs.map(tx => {
+            const rate = rates[tx.token_symbol] || 1
+            return {
+              ...tx,
+              amountEur: Number(tx.amount) * rate
+            }
+          })
+
+          const totalEur = txsWithEur.reduce((sum, tx) => sum + tx.amountEur, 0)
+
+          return (
+            <div className="overflow-x-auto">
+              <table className="min-w-full border border-slate-200 text-sm">
+                <thead className="bg-slate-50 text-slate-700">
+                  <tr>
+                    <th className="px-3 py-2 text-left">ID</th>
+                    <th className="px-3 py-2 text-left">Date</th>
+                    <th className="px-3 py-2 text-right">Montant</th>
+                    <th className="px-3 py-2 text-right">Devise</th>
+                    <th className="px-3 py-2 text-right">Montant (EUR)</th>
+                    <th className="px-3 py-2 text-left">De</th>
+                    <th className="px-3 py-2 text-left">À</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {txsWithEur.map(tx => (
+                    <tr key={tx.id} className="border-t">
+                      <td className="px-3 py-2 font-mono text-xs">{tx.id.slice(0, 8)}…</td>
+                      <td className="px-3 py-2">{new Date(tx.block_time).toLocaleString('fr-FR')}</td>
+                      <td className="px-3 py-2 text-right font-medium">{tx.amount}</td>
+                      <td className="px-3 py-2 text-right">{tx.token_symbol}</td>
+                      <td className="px-3 py-2 text-right font-semibold text-emerald-600">
+                        {tx.amountEur.toFixed(2)} €
+                      </td>
+                      <td className="px-3 py-2 truncate max-w-[120px]">{tx.from_addr}</td>
+                      <td className="px-3 py-2 truncate max-w-[120px]">{tx.to_addr}</td>
+                    </tr>
+                  ))}
+                  <tr className="border-t bg-slate-100 font-bold">
+                    <td className="px-3 py-2" colSpan={4}>Total</td>
+                    <td className="px-3 py-2 text-right text-emerald-700">{totalEur.toFixed(2)} €</td>
+                    <td colSpan={2}></td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-            )}
+          )
+        })()
+      )}
+    </Card>
+  </div>
+)}
+
 
             {activeTab === 'pl' && (
               <div className="space-y-6">
